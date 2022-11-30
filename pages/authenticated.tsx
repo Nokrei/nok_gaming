@@ -31,10 +31,12 @@ export default function Authenticated() {
   }, []);
   return (
     <div>
-      <h1>You are logged in</h1>
-      {genres.map((genre) => {
-        return <p key={genre.id}>{genre.name}</p>;
-      })}
+      <h1 className="text-3xl font-bold text-center">You are logged in</h1>
+      <div className="text-center">
+        {genres.map((genre) => {
+          return <p key={genre.id}>{genre.name}</p>;
+        })}
+      </div>
     </div>
   );
 }
