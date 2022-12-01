@@ -3,11 +3,10 @@ import * as firebaseui from "firebaseui";
 import "firebaseui/dist/firebaseui.css";
 import firebase from "firebase/compat/app";
 
-export default function AuthFirebase() {
+export default function AuthFirebase({ auth }: any) {
   useEffect(() => {
     const ui =
-      firebaseui.auth.AuthUI.getInstance() ||
-      new firebaseui.auth.AuthUI(firebase.auth());
+      firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(auth);
     ui.start(".firebase-auth-container", {
       signInOptions: [
         {
@@ -18,6 +17,6 @@ export default function AuthFirebase() {
       signInSuccessUrl: "/authenticated",
       privacyPolicyUrl: "/privacy-policy",
     });
-  }, []);
+  }, [auth]);
   return <div className="firebase-auth-container"></div>;
 }
