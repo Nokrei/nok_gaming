@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { onAuthStateChanged } from "firebase/auth";
 import axios from "axios";
 import { auth } from "../config/firebaseApp.config";
@@ -6,11 +7,13 @@ import { auth } from "../config/firebaseApp.config";
 export default function Authenticated() {
   const [genres, setGenres] = useState<any[]>([]);
 
+  const router = useRouter();
+
   onAuthStateChanged(auth, (user) => {
     if (user) {
       console.log(user);
     } else {
-      console.log("You are not signed in.");
+      router.push("/");
     }
   });
 
@@ -29,6 +32,7 @@ export default function Authenticated() {
     };
     getGenres();
   }, []);
+
   return (
     <div>
       <h1 className="text-3xl font-bold text-center">You are logged in</h1>
