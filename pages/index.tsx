@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import Layout from "../components/Layout/Layout";
 import { auth } from "../config/firebaseApp.config";
 
 // Needs to be a dynamic import, else will throw "ReferenceError: window is not defined".
@@ -10,8 +11,8 @@ const AuthFirebase = dynamic(() => import("../utils/AuthFirebase"), {
 
 export default function Home() {
   return (
-    <div>
+    <Layout>
       <AuthFirebase auth={auth} />
-    </div>
+    </Layout>
   );
 }

@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { onAuthStateChanged } from "firebase/auth";
 import axios from "axios";
 import { auth } from "../config/firebaseApp.config";
+import Layout from "../components/Layout/Layout";
 
 export default function Authenticated() {
   const [genres, setGenres] = useState<any[]>([]);
@@ -34,13 +35,13 @@ export default function Authenticated() {
   }, []);
 
   return (
-    <div>
+    <Layout>
       <h1 className="text-3xl font-bold text-center">You are logged in</h1>
       <div className="text-center">
         {genres.map((genre) => {
           return <p key={genre.id}>{genre.name}</p>;
         })}
       </div>
-    </div>
+    </Layout>
   );
 }
