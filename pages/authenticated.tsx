@@ -40,10 +40,13 @@ export default function Authenticated() {
       <h1 className="text-3xl font-bold text-center mb-10">
         You are logged in
       </h1>
-      <div className=" grid grid-cols-5 justify-items-center">
+      <div className=" grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5  justify-items-center">
         {games.map((game) => {
           return (
-            <div className="w-60 mb-5" key={game.id}>
+            <div
+              className="w-60 mb-10  shadow-lg shadow-slate-500"
+              key={game.id}
+            >
               <div className=" relative w-60 h-80">
                 <Image
                   fill
