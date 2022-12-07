@@ -24,26 +24,27 @@ export default function Authenticated() {
     }
   });
 
+  const getGames = async () => {
+    try {
+      const res = await axios({
+        method: "GET",
+        url: "https://api.rawg.io/api/games?key=567d69a8bf924ba1bebbf68419d9cd46&page=1",
+      });
+      setGames(res.data.results);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getUserFavouriteGames = async () => {
+    const docRef = doc(db, "users", JSON.parse(loggedInUser).uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      setUserFavouriteGames(docSnap.data().favouriteGames);
+    }
+  };
+
   useEffect(() => {
-    const getGames = async () => {
-      try {
-        const res = await axios({
-          method: "GET",
-          url: "https://api.rawg.io/api/games?key=567d69a8bf924ba1bebbf68419d9cd46&page=1",
-        });
-        setGames(res.data.results);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    const getUserFavouriteGames = async () => {
-      const docRef = doc(db, "users", JSON.parse(loggedInUser).uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        console.log(docSnap.data());
-        setUserFavouriteGames(docSnap.data().favouriteGames);
-      }
-    };
     getGames();
     loggedInUser && getUserFavouriteGames();
   }, [loggedInUser]);
@@ -62,7 +63,11 @@ export default function Authenticated() {
               gameTitle={game.name}
               gameImageSrc={game.background_image}
               gameImageAltText={game.name}
-              isFavourite={userFavouriteGames.includes(game.id) && true}
+              isFavourite={
+                userFavouriteGames &&
+                userFavouriteGames.includes(game.id) &&
+                true
+              }
             />
           );
         })}

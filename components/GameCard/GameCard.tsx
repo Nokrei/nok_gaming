@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import { arrayUnion, updateDoc, doc } from "firebase/firestore";
-import { auth, db } from "../../config/firebaseApp.config";
+import { db } from "../../config/firebaseApp.config";
 import AuthContext from "../../context/AuthContext";
 
 type GameCard = {
@@ -18,24 +18,39 @@ export default function GameCard({
   gameImageAltText,
   gameTitle,
   gameId,
-  key,
   isFavourite,
 }: GameCard) {
   const { loggedInUser, setLoggedInUser } = useContext(AuthContext);
+  const [cardShadowStyle, setCardShadowStyle] = useState({});
 
   const addToFavourites = async (game: string) => {
     await updateDoc(doc(db, "users", JSON.parse(loggedInUser).uid), {
       favouriteGames: arrayUnion(game),
     });
+    setCardShadowStyle({
+      boxShadow: "10px 10px 5px 0px rgba(71,222,37,0.75)",
+    });
   };
 
-  const cardShadowStyle = isFavourite
-    ? {
+  useEffect(() => {
+    if (isFavourite) {
+      setCardShadowStyle({
         boxShadow: "10px 10px 5px 0px rgba(71,222,37,0.75)",
-      }
-    : {
+      });
+    } else {
+      setCardShadowStyle({
         boxShadow: "10px 10px 5px 0px rgba(0,0,0,0.75)",
-      };
+      });
+    }
+  }, [isFavourite]);
+
+  //   let cardShadowStyle = isFavourite
+  //     ? {
+  //         boxShadow: "10px 10px 5px 0px rgba(71,222,37,0.75)",
+  //       }
+  //     : {
+  //         boxShadow: "10px 10px 5px 0px rgba(0,0,0,0.75)",
+  //       };
 
   return (
     <div
