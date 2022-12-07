@@ -80,6 +80,8 @@ export default function GameCard({
           objectFit="cover"
           sizes="(max-width:1200px) 50vw"
           src={gameImageSrc}
+          placeholder="blur"
+          blurDataURL={gameImageSrc}
           alt={`${gameImageAltText} poster`}
         />
       </div>
