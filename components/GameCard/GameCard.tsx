@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import { arrayUnion, updateDoc, doc, arrayRemove } from "firebase/firestore";
-import { db } from "../../config/firebaseApp.config";
-import AuthContext from "../../context/AuthContext";
+import { db } from "@/config/firebaseApp.config";
+import AuthContext from "@/context/AuthContext";
 
 type GameCard = {
   gameImageSrc: string;

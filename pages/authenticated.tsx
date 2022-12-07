@@ -3,15 +3,16 @@ import { useRouter } from "next/router";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import axios from "axios";
-import { auth, db } from "../config/firebaseApp.config";
-import Layout from "../components/Layout/Layout";
-import AuthContext from "../context/AuthContext";
-import GameCard from "../components/GameCard/GameCard";
+import { auth, db } from "@/config/firebaseApp.config";
+import Layout from "@/components/Layout/Layout";
+import AuthContext from "@/context/AuthContext";
+import GameCard from "@/components/GameCard/GameCard";
 
-export default function Authenticated() {
+export default function AuthenticatedPage() {
   const [games, setGames] = useState<any[]>([]);
   const [userFavouriteGames, setUserFavouriteGames] = useState<any[]>([]);
   const { loggedInUser, setLoggedInUser } = useContext(AuthContext);
+  const [username, setUsername] = useState("");
 
   const router = useRouter();
 
@@ -41,6 +42,7 @@ export default function Authenticated() {
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       setUserFavouriteGames(docSnap.data().favouriteGames);
+      setUsername(docSnap.data().fullName);
     }
   };
 
@@ -54,7 +56,7 @@ export default function Authenticated() {
   return (
     <Layout>
       <h1 className="text-3xl font-bold text-center my-10">
-        Welcome {loggedInUser && JSON.parse(loggedInUser).email}
+        Welcome {username}
       </h1>
       <p className="text-center mb-20">
         Click a game card to add it to your favourites. <br />

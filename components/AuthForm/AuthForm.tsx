@@ -2,32 +2,55 @@ import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import AuthContext from "@/context/AuthContext";
 
+type AuthForm = {
+  action: any;
+  buttonText: string;
+  isForRegistration: boolean;
+};
+
 export default function AuthForm({
   action,
   buttonText,
-}: {
-  action: any;
-  buttonText: string;
-}) {
+  isForRegistration,
+}: AuthForm) {
+  // To have all account creation / login erros display in the same place
+  // importing errors from firebase here.
   const { firebaseError } = useContext(AuthContext);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data: any) => action(data.email, data.password);
+  const onSubmit = (data: any) =>
+    action(data.email, data.password, data.fullName);
 
   return (
-    <div className=" w-96  m-auto">
+    <div className=" mt-10 w-96 m-auto shadow rounded p-4">
       <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+        {isForRegistration && (
+          <>
+            <label className="mb-1" htmlFor="fullName">
+              Full Name
+            </label>
+            <input
+              id="fullName"
+              className="border p-2 mb-3 rounded"
+              type="text"
+              autoComplete="name"
+              {...register("fullName", { required: true })}
+            />
+          </>
+        )}
         <label className="mb-1 " htmlFor="email">
           Email{" "}
         </label>
         <input
           id="email"
-          className="border p-2 mb-3"
+          className="border p-2 mb-3 rounded"
           type="email"
+          autoComplete="email"
           {...register("email", { required: true })}
         />
 
@@ -36,10 +59,11 @@ export default function AuthForm({
         </label>
         <input
           id="password"
-          className="border p-2"
+          className="border p-2 rounded"
           type="password"
           {...register("password", { required: true })}
         />
+
         {errors.email && (
           <span className=" text-xs text-red-400">
             Please enter valid email.
@@ -53,7 +77,7 @@ export default function AuthForm({
         )}
 
         <button
-          className="bg-teal-100 p-2  font-semibold font-sans hover:bg-teal-300 duration-200"
+          className="bg-sky-600 mt-8 rounded p-2 text-white  font-semibold font-sans hover:bg-sky-700 duration-100"
           type="submit"
         >
           {buttonText}

@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
   const [firebaseError, setFirebaseError] = useState(null);
 
   // Register
-  const createAccount = (email: string, password: string) => {
+  const createAccount = (email: string, password: string, fullName: string) => {
     setFirebaseError(null);
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -42,6 +42,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
         setDoc(doc(db, "users", user.uid), {
           uid: user.uid,
           email: user.email,
+          fullName: fullName,
         });
       })
       .catch((error) => {
@@ -68,12 +69,15 @@ export const AuthProvider = ({ children }: { children: any }) => {
       const credential = GoogleAuthProvider.credentialFromResult(res);
       const token = credential?.accessToken;
       const user = res.user;
+      console.log(res.user);
+
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
         setDoc(doc(db, "users", user.uid), {
           uid: user.uid,
           email: user.email,
+          fullName: user.displayName,
         });
       }
     } catch (err) {
