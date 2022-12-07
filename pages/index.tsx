@@ -1,30 +1,18 @@
-import { useContext, useState } from "react";
+import { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import { onAuthStateChanged } from "firebase/auth";
-import { CreateAccount, LogIn } from "../utils/AuthGoogle";
-import { auth } from "../config/firebaseApp.config";
-import dynamic from "next/dynamic";
-import Layout from "../components/Layout/Layout";
-import { useForm } from "react-hook-form";
-// import { createAccount } from "../utils/AuthGoogle";
-import AuthForm from "../components/AuthForm/AuthForm";
-import AuthContext from "../context/AuthContext";
-
-// Needs to be a dynamic import, else will throw "ReferenceError: window is not defined".
-// Firebaseui expects a window object to be loaded, which it won't find due to SSR.
-
-// const AuthFirebase = dynamic(() => import("../utils/AuthFirebase"), {
-//   ssr: false,
-// });
+import { auth } from "@/config/firebaseApp.config";
+import AuthContext from "@/context/AuthContext";
+import Layout from "@/components/Layout/Layout";
+import AuthForm from "@/components/AuthForm/AuthForm";
 
 export default function Home() {
   const router = useRouter();
-  const { loggedInUser } = useContext(AuthContext);
+  const { createAccount, logIn, googleSignIn } = useContext(AuthContext);
   const [showCreateAccountForm, setShowCreateAccountForm] = useState(false);
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      console.log(user);
       router.push("/authenticated");
     } else {
     }
@@ -37,8 +25,9 @@ export default function Home() {
 
         {!showCreateAccountForm ? (
           <div>
+            <p onClick={googleSignIn}>Sign in with google</p>
             <h2>Login</h2>
-            <AuthForm action={LogIn} buttonText="Login" />
+            <AuthForm action={logIn} buttonText="Login" />
             <p>{"Don't"} have an account?</p>
             <p>
               Click{" "}
@@ -54,7 +43,7 @@ export default function Home() {
         ) : (
           <div>
             <h2>Register</h2>
-            <AuthForm action={CreateAccount} buttonText="Register" />
+            <AuthForm action={createAccount} buttonText="Register" />
             <p>Already have an account?</p>
             <p>
               Click{" "}

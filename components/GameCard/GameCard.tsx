@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
-import { arrayUnion, updateDoc, doc } from "firebase/firestore";
+import { arrayUnion, updateDoc, doc, arrayRemove } from "firebase/firestore";
 import { db } from "../../config/firebaseApp.config";
 import AuthContext from "../../context/AuthContext";
 
@@ -20,18 +20,40 @@ export default function GameCard({
   gameId,
   isFavourite,
 }: GameCard) {
-  const { loggedInUser, setLoggedInUser } = useContext(AuthContext);
-  const [cardShadowStyle, setCardShadowStyle] = useState({});
+  // Styles for highlighting favourite games.
+  const highlightedStyle = "10px 10px 5px 0px rgba(71,222,37,0.75)";
+  const regularStyle = "10px 10px 5px 0px rgba(0,0,0,0.75)";
 
+  const { loggedInUser, setLoggedInUser } = useContext(AuthContext);
+
+  // By default a game is not highlighted.
+  const [cardShadowStyle, setCardShadowStyle] = useState({
+    boxShadow: regularStyle,
+  });
+
+  //  On click - add a game to favourites, or if game already is in favourites
+  //  remove it. Game will be highlighted / have highlight removed without
+  //  page refresh.
   const addToFavourites = async (game: string) => {
-    await updateDoc(doc(db, "users", JSON.parse(loggedInUser).uid), {
-      favouriteGames: arrayUnion(game),
-    });
-    setCardShadowStyle({
-      boxShadow: "10px 10px 5px 0px rgba(71,222,37,0.75)",
-    });
+    if (cardShadowStyle.boxShadow === regularStyle) {
+      await updateDoc(doc(db, "users", JSON.parse(loggedInUser).uid), {
+        favouriteGames: arrayUnion(game),
+      });
+      setCardShadowStyle({
+        boxShadow: highlightedStyle,
+      });
+    } else {
+      await updateDoc(doc(db, "users", JSON.parse(loggedInUser).uid), {
+        favouriteGames: arrayRemove(game),
+      });
+      setCardShadowStyle({
+        boxShadow: regularStyle,
+      });
+    }
   };
 
+  // On page load - if a game is in user's favourite list in Firestore
+  // highlight it.
   useEffect(() => {
     if (isFavourite) {
       setCardShadowStyle({
@@ -43,14 +65,6 @@ export default function GameCard({
       });
     }
   }, [isFavourite]);
-
-  //   let cardShadowStyle = isFavourite
-  //     ? {
-  //         boxShadow: "10px 10px 5px 0px rgba(71,222,37,0.75)",
-  //       }
-  //     : {
-  //         boxShadow: "10px 10px 5px 0px rgba(0,0,0,0.75)",
-  //       };
 
   return (
     <div

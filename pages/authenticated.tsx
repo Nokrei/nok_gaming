@@ -20,7 +20,7 @@ export default function Authenticated() {
       setLoggedInUser(JSON.stringify(user));
     } else {
       router.push("/");
-      setLoggedInUser("");
+      setLoggedInUser(null);
     }
   });
 
@@ -46,14 +46,20 @@ export default function Authenticated() {
 
   useEffect(() => {
     getGames();
-    loggedInUser && getUserFavouriteGames();
+    if (loggedInUser) {
+      getUserFavouriteGames();
+    }
   }, [loggedInUser]);
 
   return (
     <Layout>
-      <h1 className="text-3xl font-bold text-center mb-10">
+      <h1 className="text-3xl font-bold text-center my-10">
         Welcome {loggedInUser && JSON.parse(loggedInUser).email}
       </h1>
+      <p className="text-center mb-20">
+        Click a game card to add it to your favourites. <br />
+        Click it again to remove.
+      </p>
       <div className=" grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5  justify-items-center">
         {games.map((game) => {
           return (

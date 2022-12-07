@@ -1,5 +1,6 @@
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { CreateAccount, LogIn } from "../../utils/AuthGoogle";
+import AuthContext from "@/context/AuthContext";
 
 export default function AuthForm({
   action,
@@ -8,12 +9,15 @@ export default function AuthForm({
   action: any;
   buttonText: string;
 }) {
+  const { firebaseError } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const onSubmit = (data: any) => action(data.email, data.password);
+
   return (
     <div className=" w-96  m-auto">
       <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
@@ -43,6 +47,9 @@ export default function AuthForm({
         )}
         {errors.password && (
           <span className="text-xs text-red-400">Please enter password.</span>
+        )}
+        {firebaseError && (
+          <span className="text-xs text-red-400">{firebaseError}</span>
         )}
 
         <button
