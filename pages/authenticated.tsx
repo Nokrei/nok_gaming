@@ -2,8 +2,9 @@ import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 import { auth, db } from "@/config/firebaseApp.config";
+import { fetchAllGames } from "../fetchers/rawgAPI";
 import Layout from "@/components/Layout/Layout";
 import AuthContext from "@/context/AuthContext";
 import GameCard from "@/components/GameCard/GameCard";
@@ -25,17 +26,10 @@ export default function AuthenticatedPage() {
     }
   });
 
-  const getGames = async () => {
-    try {
-      const res = await axios({
-        method: "GET",
-        url: "https://api.rawg.io/api/games?key=567d69a8bf924ba1bebbf68419d9cd46&page=1",
-      });
-      setGames(res.data.results);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const allGamesQuery = useQuery({
+    queryKey: ["allGames"],
+    queryFn: () => fetchAllGames(1),
+  });
 
   const getUserFavouriteGames = async () => {
     const docRef = doc(db, "users", JSON.parse(loggedInUser).uid);
@@ -47,7 +41,6 @@ export default function AuthenticatedPage() {
   };
 
   useEffect(() => {
-    getGames();
     if (loggedInUser) {
       getUserFavouriteGames();
     }
@@ -63,7 +56,7 @@ export default function AuthenticatedPage() {
         Click it again to remove.
       </p>
       <div className=" grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5  justify-items-center">
-        {games.map((game) => {
+        {allGamesQuery.data?.map((game: any) => {
           return (
             <GameCard
               key={game.id}
