@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
@@ -10,7 +10,6 @@ import AuthContext from "@/context/AuthContext";
 import GameCard from "@/components/GameCard/GameCard";
 
 export default function AuthenticatedPage() {
-  const [games, setGames] = useState<any[]>([]);
   const [userFavouriteGames, setUserFavouriteGames] = useState<any[]>([]);
   const { loggedInUser, setLoggedInUser } = useContext(AuthContext);
   const [username, setUsername] = useState("");
@@ -20,6 +19,7 @@ export default function AuthenticatedPage() {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       setLoggedInUser(JSON.stringify(user));
+      loggedInUser && getUserFavouriteGames();
     } else {
       router.push("/");
       setLoggedInUser(null);
@@ -39,12 +39,6 @@ export default function AuthenticatedPage() {
       setUsername(docSnap.data().fullName);
     }
   };
-
-  useEffect(() => {
-    if (loggedInUser) {
-      getUserFavouriteGames();
-    }
-  }, [loggedInUser]);
 
   return (
     <Layout>

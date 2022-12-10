@@ -10,7 +10,6 @@ export default function Home() {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       router.push("/authenticated");
-    } else {
     }
   });
 
