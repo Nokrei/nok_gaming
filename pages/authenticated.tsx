@@ -12,7 +12,7 @@ import GameCard from "@/components/GameCard/GameCard";
 export default function AuthenticatedPage() {
   const [userFavouriteGames, setUserFavouriteGames] = useState<any[]>([]);
   const { loggedInUser, setLoggedInUser } = useContext(AuthContext);
-  const [username, setUsername] = useState("");
+  const [displayedName, setDisplayedName] = useState("");
 
   const router = useRouter();
 
@@ -36,14 +36,14 @@ export default function AuthenticatedPage() {
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       setUserFavouriteGames(docSnap.data().favouriteGames);
-      setUsername(docSnap.data().fullName);
+      setDisplayedName(docSnap.data().fullName);
     }
   };
 
   return (
     <Layout>
       <h1 className="text-3xl font-bold text-center my-10">
-        Welcome {username}
+        Welcome {displayedName}
       </h1>
       <p className="text-center mb-20">
         Click a game card to add it to your favourites. <br />
@@ -54,15 +54,8 @@ export default function AuthenticatedPage() {
           return (
             <GameCard
               key={game.id}
-              gameId={game.id}
-              gameTitle={game.name}
-              gameImageSrc={game.background_image}
-              gameImageAltText={game.name}
-              isFavourite={
-                userFavouriteGames &&
-                userFavouriteGames.includes(game.id) &&
-                true
-              }
+              game={game}
+              isFavourite={userFavouriteGames.includes(game.id)}
             />
           );
         })}

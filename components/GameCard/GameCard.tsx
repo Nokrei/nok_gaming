@@ -5,26 +5,16 @@ import { db } from "@/config/firebaseApp.config";
 import AuthContext from "@/context/AuthContext";
 
 type GameCard = {
-  gameImageSrc: string;
-  gameImageAltText: string;
-  gameTitle: string;
-  gameId: any;
-  key: any;
+  game: any;
   isFavourite: boolean;
 };
 
-export default function GameCard({
-  gameImageSrc,
-  gameImageAltText,
-  gameTitle,
-  gameId,
-  isFavourite,
-}: GameCard) {
+export default function GameCard({ isFavourite, game }: GameCard) {
   // Styles for highlighting favourite games.
   const highlightedStyle = "10px 10px 5px 0px rgba(71,222,37,0.75)";
   const regularStyle = "10px 10px 5px 0px rgba(0,0,0,0.75)";
 
-  const { loggedInUser, setLoggedInUser } = useContext(AuthContext);
+  const { loggedInUser } = useContext(AuthContext);
 
   // By default a game is not highlighted.
   const [cardShadowStyle, setCardShadowStyle] = useState({
@@ -57,11 +47,11 @@ export default function GameCard({
   useEffect(() => {
     if (isFavourite) {
       setCardShadowStyle({
-        boxShadow: "10px 10px 5px 0px rgba(71,222,37,0.75)",
+        boxShadow: highlightedStyle,
       });
     } else {
       setCardShadowStyle({
-        boxShadow: "10px 10px 5px 0px rgba(0,0,0,0.75)",
+        boxShadow: regularStyle,
       });
     }
   }, [isFavourite]);
@@ -69,7 +59,7 @@ export default function GameCard({
   return (
     <div
       onClick={() => {
-        addToFavourites(gameId);
+        addToFavourites(game.id);
       }}
       className="w-60 mb-10 shadow-lg cursor-pointer hover:scale-105 duration-100"
       style={cardShadowStyle}
@@ -79,13 +69,13 @@ export default function GameCard({
           fill
           objectFit="cover"
           sizes="(max-width:1200px) 50vw"
-          src={gameImageSrc}
+          src={game.background_image}
           placeholder="blur"
-          blurDataURL={gameImageSrc}
-          alt={`${gameImageAltText} poster`}
+          blurDataURL={game.background_image}
+          alt={`${game.name} poster`}
         />
       </div>
-      <p className=" text-white bg-black "> {gameTitle}</p>
+      <p className=" text-white bg-black "> {game.name}</p>
     </div>
   );
 }
