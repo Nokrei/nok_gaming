@@ -26,7 +26,8 @@
     "**/*.ts",
     "**/*.tsx",
     "pages/index.tsx",
-    "pages/index.tsx"
+    "pages/index.tsx",
+    "config/firebaseApp.config.ts"
   ],
   "exclude": ["node_modules"]
 }
