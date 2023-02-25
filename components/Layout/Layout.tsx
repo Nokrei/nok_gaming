@@ -1,5 +1,7 @@
 import React from "react";
+import { useRouter } from "next/router";
 import Head from "next/head";
+
 import Header from "../Header/Header";
 
 type LayoutType = {

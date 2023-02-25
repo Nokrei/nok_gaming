@@ -1,4 +1,10 @@
-import { createContext, useState } from "react";
+import {
+  createContext,
+  useState,
+  Dispatch,
+  SetStateAction,
+  ReactElement,
+} from "react";
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
@@ -9,28 +15,29 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db, googleProvider } from "@/config/firebaseApp.config";
 
 type Context = {
-  loggedInUser: any;
-  setLoggedInUser: any;
+  loggedInUser: string;
+  setLoggedInUser: Dispatch<SetStateAction<string>>;
   firebaseError: any;
-  createAccount: any;
-  logIn: any;
-  googleSignIn: any;
+  createAccount: (email: string, password: string, fullName: string) => void;
+  logIn: (email: string, password: string) => void;
+  googleSignIn: () => void;
 };
 
 const user: Context = {
   loggedInUser: "",
-  setLoggedInUser: "",
+  setLoggedInUser: () => null,
   firebaseError: null,
-  createAccount: null,
-  logIn: null,
-  googleSignIn: null,
+  createAccount: () => null,
+  logIn: () => null,
+  googleSignIn: () => null,
 };
 
 const AuthContext = createContext(user);
 
 export const AuthProvider = ({ children }: { children: any }) => {
-  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [loggedInUser, setLoggedInUser] = useState("");
   const [firebaseError, setFirebaseError] = useState(null);
+  const [displayedName, setDisplayedName] = useState("");
 
   // Register
   const createAccount = (email: string, password: string, fullName: string) => {
@@ -67,10 +74,9 @@ export const AuthProvider = ({ children }: { children: any }) => {
     try {
       const res = await signInWithPopup(auth, googleProvider);
       const credential = GoogleAuthProvider.credentialFromResult(res);
-      const token = credential?.accessToken;
+      // const token = credential?.accessToken;
       const user = res.user;
       console.log(res.user);
-
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {

@@ -4,40 +4,46 @@ import { arrayUnion, updateDoc, doc, arrayRemove } from "firebase/firestore";
 import { db } from "@/config/firebaseApp.config";
 import AuthContext from "@/context/AuthContext";
 
+type Game = {
+  id: number;
+  background_image: string;
+  name: string;
+};
+
 type GameCard = {
-  game: any;
+  game: Game;
   isFavourite: boolean;
 };
 
 export default function GameCard({ isFavourite, game }: GameCard) {
   // Styles for highlighting favourite games.
-  const highlightedStyle = "10px 10px 5px 0px rgba(71,222,37,0.75)";
-  const regularStyle = "10px 10px 5px 0px rgba(0,0,0,0.75)";
+  const highlightedStyle = "green";
+  const regularStyle = "white";
 
   const { loggedInUser } = useContext(AuthContext);
 
   // By default a game is not highlighted.
   const [cardShadowStyle, setCardShadowStyle] = useState({
-    boxShadow: regularStyle,
+    color: "green",
   });
 
   //  On click - add a game to favourites, or if game already is in favourites
   //  remove it. Game will be highlighted / have highlight removed without
   //  page refresh.
-  const addToFavourites = async (game: string) => {
-    if (cardShadowStyle.boxShadow === regularStyle) {
+  const addToFavourites = async (game: number) => {
+    if (cardShadowStyle.color === regularStyle) {
       await updateDoc(doc(db, "users", JSON.parse(loggedInUser).uid), {
         favouriteGames: arrayUnion(game),
       });
       setCardShadowStyle({
-        boxShadow: highlightedStyle,
+        color: highlightedStyle,
       });
     } else {
       await updateDoc(doc(db, "users", JSON.parse(loggedInUser).uid), {
         favouriteGames: arrayRemove(game),
       });
       setCardShadowStyle({
-        boxShadow: regularStyle,
+        color: regularStyle,
       });
     }
   };
@@ -47,24 +53,31 @@ export default function GameCard({ isFavourite, game }: GameCard) {
   useEffect(() => {
     if (isFavourite) {
       setCardShadowStyle({
-        boxShadow: highlightedStyle,
+        color: highlightedStyle,
       });
     } else {
       setCardShadowStyle({
-        boxShadow: regularStyle,
+        color: regularStyle,
       });
     }
   }, [isFavourite]);
 
   return (
-    <div
-      onClick={() => {
-        addToFavourites(game.id);
-      }}
-      className="w-60 mb-10 shadow-lg cursor-pointer hover:scale-105 duration-100"
-      style={cardShadowStyle}
-    >
-      <div className=" relative w-60 h-80">
+    <div className="group mb-10 w-60  shadow-lg duration-100 ">
+      <div className=" relative h-80 w-60">
+        <div className="relative z-20 flex justify-between">
+          <button
+            onClick={() => {
+              addToFavourites(game.id);
+            }}
+            className="h-0 w-6/12 cursor-pointer bg-green-500 opacity-0 duration-200 hover:bg-green-300 group-hover:h-10 group-hover:opacity-90"
+          >
+            Fav
+          </button>
+          <button className="h-0 w-6/12 cursor-pointer bg-blue-500 opacity-0 duration-200 hover:bg-blue-300 group-hover:h-10 group-hover:opacity-90">
+            Details
+          </button>
+        </div>
         <Image
           fill
           objectFit="cover"
@@ -75,7 +88,11 @@ export default function GameCard({ isFavourite, game }: GameCard) {
           alt={`${game.name} poster`}
         />
       </div>
-      <p className=" text-white bg-black "> {game.name}</p>
+      <div>
+        <p style={cardShadowStyle} className="bg-black text-center text-white">
+          {game.name}
+        </p>
+      </div>
     </div>
   );
 }

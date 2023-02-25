@@ -3,7 +3,7 @@ import { signOut, getAuth } from "firebase/auth";
 import AuthContext from "../../context/AuthContext";
 
 export default function Header() {
-  const { loggedInUser, setLoggedInUser } = useContext(AuthContext);
+  const { loggedInUser } = useContext(AuthContext);
   const auth = getAuth();
   const handleSignOut = () => {
     signOut(auth)

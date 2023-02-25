@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
@@ -19,10 +19,9 @@ export default function AuthenticatedPage() {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       setLoggedInUser(JSON.stringify(user));
-      loggedInUser && getUserFavouriteGames();
     } else {
       router.push("/");
-      setLoggedInUser(null);
+      setLoggedInUser("");
     }
   });
 
@@ -31,14 +30,19 @@ export default function AuthenticatedPage() {
     queryFn: () => fetchAllGames(1),
   });
 
-  const getUserFavouriteGames = async () => {
-    const docRef = doc(db, "users", JSON.parse(loggedInUser).uid);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      setUserFavouriteGames(docSnap.data().favouriteGames);
-      setDisplayedName(docSnap.data().fullName);
+  useEffect(() => {
+    const getUserFavouriteGames = async () => {
+      const docRef = doc(db, "users", JSON.parse(loggedInUser).uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setUserFavouriteGames(docSnap.data().favouriteGames);
+        setDisplayedName(docSnap.data().fullName);
+      }
+    };
+    if (loggedInUser) {
+      getUserFavouriteGames();
     }
-  };
+  }, [loggedInUser]);
 
   return (
     <Layout>

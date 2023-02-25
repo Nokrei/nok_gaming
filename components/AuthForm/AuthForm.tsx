@@ -1,11 +1,17 @@
 import { useContext } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import AuthContext from "@/context/AuthContext";
 
 type AuthForm = {
-  action: any;
+  action: (email: string, password: string, fullName: string) => void;
   buttonText: string;
   isForRegistration: boolean;
+};
+
+type Inputs = {
+  fullName: string;
+  email: string;
+  password: string;
 };
 
 export default function AuthForm({
@@ -21,9 +27,9 @@ export default function AuthForm({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<Inputs>();
 
-  const onSubmit = (data: any) =>
+  const onSubmit: SubmitHandler<Inputs> = (data) =>
     action(data.email, data.password, data.fullName);
 
   return (
