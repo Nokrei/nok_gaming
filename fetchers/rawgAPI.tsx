@@ -5,8 +5,8 @@ export const fetchAllGames = async (pageNumber: number) => {
   const response = await axios.get(
     `https://api.rawg.io/api/games?key=567d69a8bf924ba1bebbf68419d9cd46&page=${pageNumber}`
   );
-  const allGames = response.data.results;
-  console.log(allGames);
+  const allGames = response.data;
+  console.log(response.data);
 
   return allGames;
 };

@@ -5,6 +5,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { useQuery } from "@tanstack/react-query";
 import { auth, db } from "@/config/firebaseApp.config";
 import { fetchAllGames } from "../fetchers/rawgAPI";
+import ReactPaginate from "react-paginate";
 import Layout from "@/components/Layout/Layout";
 import AuthContext from "@/context/AuthContext";
 import GameCard from "@/components/GameCard/GameCard";
@@ -13,6 +14,7 @@ export default function AuthenticatedPage() {
   const [userFavouriteGames, setUserFavouriteGames] = useState<any[]>([]);
   const { loggedInUser, setLoggedInUser } = useContext(AuthContext);
   const [displayedName, setDisplayedName] = useState("");
+  const [selectedPage, setSelectedPage] = useState(1);
 
   const router = useRouter();
 
@@ -25,10 +27,12 @@ export default function AuthenticatedPage() {
     }
   });
 
-  const allGamesQuery = useQuery({
-    queryKey: ["allGames"],
-    queryFn: () => fetchAllGames(1),
-  });
+  const { isLoading, isError, error, data, isFetching, isPreviousData } =
+    useQuery({
+      queryKey: ["allGames", selectedPage],
+      queryFn: () => fetchAllGames(selectedPage),
+      keepPreviousData: true,
+    });
 
   useEffect(() => {
     const getUserFavouriteGames = async () => {
@@ -46,23 +50,48 @@ export default function AuthenticatedPage() {
 
   return (
     <Layout>
-      <h1 className="text-3xl font-bold text-center my-10">
+      <h1 className="my-10 text-center text-3xl font-bold">
         Welcome {displayedName}
       </h1>
-      <p className="text-center mb-20">
+      <p className="mb-20 text-center">
         Click a game card to add it to your favourites. <br />
         Click it again to remove.
       </p>
-      <div className=" grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5  justify-items-center">
-        {allGamesQuery.data?.map((game: any) => {
-          return (
-            <GameCard
-              key={game.id}
-              game={game}
-              isFavourite={userFavouriteGames.includes(game.id)}
-            />
-          );
-        })}
+      {isLoading ? (
+        <div className="text-center text-white">Loading...</div>
+      ) : isError ? (
+        <div className="text-center text-red-600">Ooops...</div>
+      ) : (
+        <div className=" grid justify-items-center sm:grid-cols-2 md:grid-cols-3  xl:grid-cols-5">
+          {data.results.map((game: any) => {
+            return (
+              <GameCard
+                key={game.id}
+                game={game}
+                isFavourite={userFavouriteGames.includes(game.id)}
+              />
+            );
+          })}
+        </div>
+      )}
+      <p className="text-center text-white">Current Page: {selectedPage}</p>
+      {isFetching && <p className="text-center text-white">Loading...</p>}
+      <div className="flex justify-center gap-5">
+        <button
+          disabled={selectedPage <= 1}
+          onClick={() => setSelectedPage((old) => Math.max(old - 1, 0))}
+          className="w-32 rounded bg-blue-500 p-2 text-white duration-100 hover:bg-blue-300"
+        >
+          Prev
+        </button>
+        <button
+          onClick={() => {
+            setSelectedPage((old) => old + 1);
+          }}
+          className="w-32 rounded bg-blue-500 p-2 text-white duration-100 hover:bg-blue-300"
+        >
+          Next
+        </button>
       </div>
     </Layout>
   );
