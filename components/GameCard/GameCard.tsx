@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { arrayUnion, updateDoc, doc, arrayRemove } from "firebase/firestore";
 import { db } from "@/config/firebaseApp.config";
@@ -74,9 +75,11 @@ export default function GameCard({ isFavourite, game }: GameCard) {
           >
             Fav
           </button>
-          <button className="h-0 w-6/12 cursor-pointer bg-blue-500 opacity-0 duration-200 hover:bg-blue-300 group-hover:h-10 group-hover:opacity-90">
-            Details
-          </button>
+          <Link className="w-6/12" href={`/game/${game.id}`}>
+            <button className="h-0 w-full  cursor-pointer bg-blue-500 opacity-0 duration-200 hover:bg-blue-300 group-hover:h-10 group-hover:opacity-90">
+              Details
+            </button>
+          </Link>
         </div>
         <Image
           fill

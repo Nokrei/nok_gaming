@@ -10,3 +10,14 @@ export const fetchAllGames = async (pageNumber: number) => {
 
   return allGames;
 };
+
+export const fetchGameDetails = async (gameId: number) => {
+  console.log("Fetching game details...");
+  const response = await axios.get(
+    `https://api.rawg.io/api/games/${gameId}?key=567d69a8bf924ba1bebbf68419d9cd46`
+  );
+  const game = response.data;
+  console.log(game);
+
+  return game;
+};

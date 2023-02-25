@@ -5,7 +5,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { useQuery } from "@tanstack/react-query";
 import { auth, db } from "@/config/firebaseApp.config";
 import { fetchAllGames } from "../fetchers/rawgAPI";
-import ReactPaginate from "react-paginate";
 import Layout from "@/components/Layout/Layout";
 import AuthContext from "@/context/AuthContext";
 import GameCard from "@/components/GameCard/GameCard";
