@@ -18,12 +18,11 @@ type Platform = {
 
 export default function GamePage() {
   const router = useRouter();
-  const { isLoading, isError, error, data, isFetching, isPreviousData } =
-    useQuery({
-      queryKey: ["Game"],
-      queryFn: () => fetchGameDetails(parseInt(router.query.id as string)),
-      keepPreviousData: true,
-    });
+  const { isLoading, isError, error, data, isFetching } = useQuery({
+    queryKey: ["Game"],
+    queryFn: () => fetchGameDetails(parseInt(router.query.id as string)),
+    keepPreviousData: true,
+  });
   console.log(router.query.id);
 
   return (
@@ -31,7 +30,7 @@ export default function GamePage() {
       {isLoading || isFetching ? (
         <p className="text-center text-white">Loading ...</p>
       ) : (
-        <div className="h-96">
+        <div className="relative py-5 md:static">
           <Image
             fill
             src={data.background_image}
@@ -39,7 +38,7 @@ export default function GamePage() {
             objectFit="cover"
             objectPosition="top"
           />
-          <div className="relative m-auto my-5 w-11/12  bg-black bg-opacity-80 p-5 text-white md:w-2/4">
+          <div className="relative m-auto w-11/12 bg-black bg-opacity-80 p-5 text-white md:w-2/4">
             <h1 className="text-center text-3xl font-bold">{data.name}</h1>
             <div className="flex flex-wrap justify-center gap-5 pt-5">
               {data.genres.map((genre: Genre) => {
@@ -53,11 +52,11 @@ export default function GamePage() {
                 );
               })}
             </div>
-            <div className="flex flex-wrap justify-center gap-5 py-5">
+            <div className="flex flex-wrap justify-center gap-3 py-5">
               {data.platforms.map((platform: Platform) => {
                 return (
                   <button
-                    className="rounded bg-sky-600 px-2 py-1"
+                    className="rounded-lg bg-sky-600 px-2 "
                     key={platform.platform.id}
                   >
                     {platform.platform.name}
@@ -65,7 +64,9 @@ export default function GamePage() {
                 );
               })}
             </div>
-            <p>{data.description_raw}</p>
+            <div>
+              <p>{data.description_raw}</p>
+            </div>
           </div>
         </div>
       )}
