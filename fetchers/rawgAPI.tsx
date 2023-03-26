@@ -1,23 +1,28 @@
 import axios from "axios";
+const baseURL = "https://api.rawg.io/api/games";
+const API_KEY = process.env.NEXT_PUBLIC_RAWG_API_KEY;
 
 export const fetchAllGames = async (pageNumber: number) => {
   console.log("Fetching all games...");
   const response = await axios.get(
-    `https://api.rawg.io/api/games?key=567d69a8bf924ba1bebbf68419d9cd46&page=${pageNumber}`
+    `${baseURL}?key=${API_KEY}&page=${pageNumber}`
   );
   const allGames = response.data;
-  console.log(response.data);
-
   return allGames;
 };
 
 export const fetchGameDetails = async (gameId: number) => {
   console.log("Fetching game details...");
-  const response = await axios.get(
-    `https://api.rawg.io/api/games/${gameId}?key=567d69a8bf924ba1bebbf68419d9cd46`
-  );
+  const response = await axios.get(`${baseURL}/${gameId}?key=${API_KEY}`);
   const game = response.data;
-  console.log(game);
-
   return game;
+};
+
+export const fetchPostsFromGameSubreddit = async (gameId: number) => {
+  console.log("Fetching subreddit posts...");
+  const response = await axios.get(
+    `${baseURL}/${gameId}/reddit?key=${API_KEY}`
+  );
+  const redditPosts = response.data;
+  return redditPosts;
 };

@@ -7,24 +7,17 @@ const scrapeCharts = async (req: any, res: any) => {
     const page = await browser.newPage();
 
     await page.goto(`https://steamcharts.com/search/?q=${gameTitle}`);
-    console.log(gameTitle);
 
     // Set screen size
     await page.setViewport({ width: 1080, height: 1024 });
 
-    // Type into search box
-    // await page.type(".search-box__input", "automate beyond recorder");
-
-    // Wait and click on first result
     const searchResultSelector = ".common-table a";
+
     try {
       await page.waitForSelector(searchResultSelector);
-      console.log(searchResultSelector);
+
       await page.click(searchResultSelector);
 
-      // Locate the full title with a unique string
-      const textSelector = await page.waitForSelector(".num");
-      const fullTitle = await textSelector.evaluate((el) => el.textContent);
       const recentAndPeakData = await page.evaluate(() =>
         Array.from(
           document.querySelectorAll(".app-stat > .num"),
@@ -32,11 +25,11 @@ const scrapeCharts = async (req: any, res: any) => {
         )
       );
       const monthlyAveragePlayers = await page.evaluate(() =>
-        Array.from(
-          document.querySelectorAll(".odd > .num-f"),
-          (element) => element.textContent
+        Array.from(document.querySelectorAll(".odd > .num-f"), (element) =>
+          parseFloat(element.textContent!.split(",").join(""))
         )
       );
+
       const datesForAverageData = await page.evaluate(() =>
         Array.from(
           document.querySelectorAll(".odd > .month-cell"),
@@ -44,16 +37,19 @@ const scrapeCharts = async (req: any, res: any) => {
         )
       );
 
-      const monthlyAverageData = {
-        monthlyAveragePlayers,
-        datesForAverageData,
-      };
-      // Print the full title
+      const monthlyAverageData = [];
+      for (let i = 0; i < monthlyAveragePlayers.length; i++) {
+        monthlyAverageData.push({
+          average_players: monthlyAveragePlayers[i],
+          month: datesForAverageData[i],
+        });
+      }
+      monthlyAverageData.reverse();
+
       const scrapingData = {
         recentAndPeakData,
         monthlyAverageData,
       };
-      console.log(scrapingData);
 
       await browser.close();
       res.status(200).json(scrapingData);
