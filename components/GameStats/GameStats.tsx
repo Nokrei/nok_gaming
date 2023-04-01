@@ -54,7 +54,7 @@ export default function GameStats({ gameTitle }: Props) {
     );
   }
 
-  console.log(data?.monthlyAverageData);
+  console.log(data);
 
   return (
     <div className="rounded bg-gray-800 p-5 text-center text-black shadow-md">
