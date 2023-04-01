@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { chromium } from "playwright";
+const playwright = require("playwright-aws-lambda");
 
 const scrapeCharts = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
@@ -7,7 +8,7 @@ const scrapeCharts = async (req: NextApiRequest, res: NextApiResponse) => {
     const gameTitle = req.body;
 
     // Open chromium browser
-    const browser = await chromium.launch({
+    const browser = await playwright.launchChromium({
       headless: true,
     });
 
