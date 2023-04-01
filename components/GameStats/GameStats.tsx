@@ -9,12 +9,20 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-type GameStats = {
+type Props = {
   gameTitle: string;
 };
 
-export default function GameStats({ gameTitle }: GameStats) {
-  const { data, isLoading, isFetching, isError, error } = useQuery({
+type Error = {
+  data: {
+    response: {
+      message: string;
+    };
+  };
+};
+
+export default function GameStats({ gameTitle }: Props) {
+  const { data, isLoading, isFetching, isError, error } = useQuery<any, Error>({
     queryKey: ["GameStats"],
     queryFn: () => fetchScrapingData(gameTitle),
     keepPreviousData: false,
@@ -22,7 +30,7 @@ export default function GameStats({ gameTitle }: GameStats) {
     cacheTime: 0,
   });
 
-  if (isLoading || isFetching) {
+  if (isLoading) {
     return (
       <div className=" rounded bg-gray-800 p-5 text-center text-white shadow-md">
         <span>Loading...</span>
@@ -30,14 +38,23 @@ export default function GameStats({ gameTitle }: GameStats) {
     );
   }
 
-  if (isError) {
+  if (error?.data?.response?.message) {
     return (
       <div className=" rounded bg-gray-800 p-5 text-center text-white shadow-md">
-        <span>Data not found</span>
+        <span>{error.data.response.message}</span>
       </div>
     );
   }
-  console.log(data);
+
+  if (isError) {
+    return (
+      <div className=" rounded bg-gray-800 p-5 text-center text-white shadow-md">
+        <span>generic error</span>
+      </div>
+    );
+  }
+
+  console.log(data?.monthlyAverageData);
 
   return (
     <div className="rounded bg-gray-800 p-5 text-center text-black shadow-md">

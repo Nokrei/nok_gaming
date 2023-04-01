@@ -5,20 +5,19 @@ import RedditPosts from "@/components/RedditPosts/RedditPosts";
 
 export default function GamePage() {
   const router = useRouter();
-  const gameId = router.query.id;
-  const gameTitle = router.query.title;
+  const { id, title } = router.query as { id: string; title: string };
 
   return (
     <div>
       <div className="bg-slate-900 py-5 md:static">
         <div className=" grid grid-cols-2 gap-3 px-5">
-          <GameBasics gameId={gameId as string} />
+          <GameBasics gameId={id} />
           <div className="col-span-2 lg:col-span-1">
-            <GameStats gameTitle={gameTitle as string} />
+            <GameStats gameTitle={title} />
           </div>
           <div className="col-span-2 rounded bg-gray-800 p-5 text-gray-400  lg:col-span-1">
             <h2 className="text-center text-3xl">Recent discussion</h2>
-            <RedditPosts gameId={gameId as string} />
+            <RedditPosts gameId={id} />
           </div>
         </div>
       </div>
