@@ -72,10 +72,12 @@ if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
 const { executablePath } = require("puppeteer");
 const scrapeCharts = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
-    let options = {};
     const gameTitle = req.body;
     const browser = await puppeteer.launch({
-      ececutablePath: executablePath(),
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
     });
     const page = await browser.newPage();
 
