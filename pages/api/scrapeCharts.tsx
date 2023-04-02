@@ -67,10 +67,13 @@ if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
 } else {
   puppeteer = require("puppeteer");
 }
+const { executablePath } = require("puppeteer");
 const scrapeCharts = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const gameTitle = req.body;
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      ececutablePath: executablePath(),
+    });
     const page = await browser.newPage();
 
     await page.goto(`https://steamcharts.com/search/?q=${gameTitle}`);
