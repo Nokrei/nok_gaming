@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { chromium } from "playwright";
+// import { chromium } from "playwright";
 
 // const playwright = require('playwright-aws-lambda');
 
@@ -62,14 +62,17 @@ import { chromium } from "playwright";
 // import puppeteer_core from "puppeteer-core";
 
 let puppeteer: any;
+let chromium = {};
 if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
   puppeteer = require("puppeteer-core");
+  chromium = require("@sparticuz/chromium");
 } else {
   puppeteer = require("puppeteer");
 }
 const { executablePath } = require("puppeteer");
 const scrapeCharts = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
+    let options = {};
     const gameTitle = req.body;
     const browser = await puppeteer.launch({
       ececutablePath: executablePath(),
