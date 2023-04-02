@@ -62,7 +62,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 // import puppeteer_core from "puppeteer-core";
 
 let puppeteer: any;
-let chromium = {};
+let chromium: any;
 if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
   puppeteer = require("puppeteer-core");
   chromium = require("@sparticuz/chromium");
