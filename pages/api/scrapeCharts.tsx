@@ -57,8 +57,17 @@ import { chromium } from "playwright";
 //     res.status(405).json({ message: `Method ${req.method} not allowed` });
 //   }
 // };
-import puppeteer from "puppeteer";
-const scrapeCharts = async (req: any, res: any) => {
+
+// import puppeteer from "puppeteer";
+// import puppeteer_core from "puppeteer-core";
+
+let puppeteer: any;
+if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+  puppeteer = require("puppeteer-core");
+} else {
+  puppeteer = require("puppeteer");
+}
+const scrapeCharts = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const gameTitle = req.body;
     const browser = await puppeteer.launch();
