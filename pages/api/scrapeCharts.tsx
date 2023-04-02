@@ -20,12 +20,16 @@ const scrapeCharts = async (req: NextApiRequest, res: NextApiResponse) => {
     const page = await browser.newPage();
 
     // Navigate to the search results on steam charts using game title as search term
-    await page.goto(`https://steamcharts.com/search/?q=${gameTitle}`);
+    // await page.goto(`https://steamcharts.com/search/?q=${gameTitle}`);
+
     try {
-      await page.click(".common-table a");
-      const recentAndPeakData = await page
-        .locator(".app-stat .num")
-        .allInnerTexts();
+      await page.goto("https://example.com");
+      const pageTitle = await page.title();
+      await browser.close();
+      // await page.click(".common-table a");
+      // const recentAndPeakData = await page
+      //   .locator(".app-stat .num")
+      //   .allInnerTexts();
 
       // const monthlyAveragePlayers = await page
       //   .locator(".odd .num-f")
@@ -44,16 +48,16 @@ const scrapeCharts = async (req: NextApiRequest, res: NextApiResponse) => {
       // }
       // monthlyAverageData.reverse();
 
-      const scrapingData = {
-        recentAndPeakData,
-        // monthlyAverageData,
-      };
-      res.status(200).json(scrapingData);
+      // const scrapingData = {
+      //   recentAndPeakData,
+      //   monthlyAverageData,
+      // };
+      // res.status(200).json(scrapingData);
+      res.status(200).json(pageTitle);
     } catch (error) {
       console.log(error);
-      res
-        .status(404)
-        .json({ message: `Stats for title: ${gameTitle} not found` });
+      res.status(404);
+      // .json({ message: `Stats for title: ${gameTitle} not found` });
     }
   } else {
     res.setHeader("Allow", ["POST"]);
