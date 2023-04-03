@@ -148,9 +148,9 @@ import type { NextApiRequest, NextApiResponse } from "next";
 // };
 
 const puppeteer = require("puppeteer-core");
-const chromium = require("@sparticuz/chromium-min");
+// const chromium = require("@sparticuz/chromium-min");
 // import puppeteer from "puppeteer-core";
-// import chromium from "@sparticuz/chromium-min";
+import chromium from "@sparticuz/chromium-min";
 
 const scrapeCharts = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
