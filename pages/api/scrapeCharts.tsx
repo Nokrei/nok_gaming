@@ -147,15 +147,15 @@ import type { NextApiRequest, NextApiResponse } from "next";
 //   }
 // };
 
-// const puppeteer = require("puppeteer-core");
-// const chromium = require("@sparticuz/chromium");
-import puppeteer from "puppeteer-core";
-import chromium from "@sparticuz/chromium-min";
+const puppeteer = require("puppeteer-core");
+const chromium = require("@sparticuz/chromium");
+// import puppeteer from "puppeteer-core";
+// import chromium from "@sparticuz/chromium-min";
 
 const scrapeCharts = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     // Get title of game to scrape
-    // const gameTitle = req.body;
+    const gameTitle = req.body;
     // Open chromium browser
     const browser = await puppeteer.launch({
       args: chromium.args,
@@ -166,47 +166,47 @@ const scrapeCharts = async (req: NextApiRequest, res: NextApiResponse) => {
     // Open new page / tab in browser
     const page = await browser.newPage();
     // Navigate to the search results on steam charts using game title as search term
-    // await page.goto(`https://steamcharts.com/search/?q=${gameTitle}`);
-    await page.goto("https://example.com");
-    // try {
-    const pageTitle = await page.title();
-    await browser.close();
-    // await page.click(".common-table a");
-    // const recentAndPeakData = await page
-    //   .locator(".app-stat .num")
-    //   .allInnerTexts();
+    await page.goto(`https://steamcharts.com/search/?q=${gameTitle}`);
+    // await page.goto("https://example.com");
+    try {
+      const pageTitle = await page.title();
+      await page.click(".common-table a");
+      const recentAndPeakData = await page
+        .locator(".app-stat .num")
+        .allInnerTexts();
 
-    // const monthlyAveragePlayers = await page
-    //   .locator(".odd .num-f")
-    //   .allInnerTexts();
+      const monthlyAveragePlayers = await page
+        .locator(".odd .num-f")
+        .allInnerTexts();
 
-    // const datesForAverageData = await page
-    //   .locator(".odd .month-cell")
-    //   .allInnerTexts();
+      const datesForAverageData = await page
+        .locator(".odd .month-cell")
+        .allInnerTexts();
+      await browser.close();
+      const monthlyAverageData = [];
+      for (let i = 0; i < monthlyAveragePlayers.length; i++) {
+        monthlyAverageData.push({
+          average_players: monthlyAveragePlayers[i],
+          month: datesForAverageData[i],
+        });
+      }
+      monthlyAverageData.reverse();
 
-    // const monthlyAverageData = [];
-    // for (let i = 0; i < monthlyAveragePlayers.length; i++) {
-    //   monthlyAverageData.push({
-    //     average_players: monthlyAveragePlayers[i],
-    //     month: datesForAverageData[i],
-    //   });
-    // }
-    // monthlyAverageData.reverse();
-
-    // const scrapingData = {
-    //   recentAndPeakData,
-    //   monthlyAverageData,
-    // };
-    // res.status(200).json(pageTitle);
-    // } catch (error) {
-    //   console.log(error);
-    //   res.status(404);
-    //   // .json({ message: `Stats for title: ${gameTitle} not found` });
-    // }
-    // } else {
-    //   res.setHeader("Allow", ["POST"]);
-    //   res.status(405).json({ message: `Method ${req.method} not allowed` });
-    // }
+      const scrapingData = {
+        recentAndPeakData,
+        monthlyAverageData,
+      };
+      res.status(200).json(pageTitle);
+    } catch (error) {
+      console.log(error);
+      res
+        .status(404)
+        .json({ message: `Stats for title: ${gameTitle} not found` });
+    }
+  } else {
+    res.setHeader("Allow", ["POST"]);
+    res.status(405).json({ message: `Method ${req.method} not allowed` });
   }
 };
-// export default scrapeCharts;
+
+export default scrapeCharts;
