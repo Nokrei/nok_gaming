@@ -148,7 +148,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 // };
 
 const puppeteer = require("puppeteer-core");
-const chromium = require("@sparticuz/chromium");
+const chromium = require("@sparticuz/chromium-min");
 // import puppeteer from "puppeteer-core";
 // import chromium from "@sparticuz/chromium-min";
 
