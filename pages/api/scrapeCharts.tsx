@@ -7,7 +7,7 @@ const chromium = require("@sparticuz/chromium");
 const scrapeCharts = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     // Get title of game to scrape
-    const gameTitle = req.body;
+    // const gameTitle = req.body;
 
     // Open chromium browser
     const browser = await playwright.launch({
