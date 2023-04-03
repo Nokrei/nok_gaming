@@ -150,7 +150,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 // const puppeteer = require("puppeteer-core");
 // const chromium = require("@sparticuz/chromium");
 import puppeteer from "puppeteer-core";
-import chromium from "@sparticuz/chromium";
+import chromium from "@sparticuz/chromium-min";
 
 const scrapeCharts = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
@@ -160,7 +160,7 @@ const scrapeCharts = async (req: NextApiRequest, res: NextApiResponse) => {
     const browser = await puppeteer.launch({
       args: chromium.args,
       defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath(),
+      executablePath: await chromium.executablePath("/opt/chromium"),
       headless: chromium.headless,
     });
     // Open new page / tab in browser
