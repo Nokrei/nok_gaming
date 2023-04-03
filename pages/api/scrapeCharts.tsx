@@ -147,8 +147,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
 //   }
 // };
 
-const puppeteer = require("puppeteer-core");
-const chromium = require("@sparticuz/chromium");
+// const puppeteer = require("puppeteer-core");
+// const chromium = require("@sparticuz/chromium");
+import puppeteer from "puppeteer-core";
+import chromium from "@sparticuz/chromium";
 
 const scrapeCharts = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
