@@ -169,7 +169,6 @@ const scrapeCharts = async (req: NextApiRequest, res: NextApiResponse) => {
     await page.goto(`https://steamcharts.com/search/?q=${gameTitle}`);
     // await page.goto("https://example.com");
     try {
-      const pageTitle = await page.title();
       await page.click(".common-table a");
       const recentAndPeakData = await page
         .locator(".app-stat .num")
@@ -196,7 +195,7 @@ const scrapeCharts = async (req: NextApiRequest, res: NextApiResponse) => {
         recentAndPeakData,
         monthlyAverageData,
       };
-      res.status(200).json(pageTitle);
+      res.status(200).json(scrapingData);
     } catch (error) {
       console.log(error);
       res
