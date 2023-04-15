@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { fetchGameDetails } from "../../fetchers/rawgAPI";
 import { useQuery } from "@tanstack/react-query";
+import { useGames } from "../../hooks";
 
 type Genre = {
   id: number;
@@ -32,17 +33,17 @@ type Error = {
 };
 
 // hooks/index.tsx
-export const useGames = (gameId: string) => {
-  const { data, isLoading, isFetching, isError, error } = useQuery<Data, Error>(
-    {
-      queryKey: ["GameDetails"],
-      queryFn: () => fetchGameDetails(parseInt(gameId)),
-      keepPreviousData: true,
-    }
-  );
+// export const useGames = (gameId: string) => {
+//   const { data, isLoading, isFetching, isError, error } = useQuery<Data, Error>(
+//     {
+//       queryKey: ["GameDetails"],
+//       queryFn: () => fetchGameDetails(parseInt(gameId)),
+//       keepPreviousData: true,
+//     }
+//   );
 
-  return { data, isLoading, isError, error, isFetching };
-};
+//   return { data, isLoading, isError, error, isFetching };
+// };
 
 export default function GameBasics({ gameId }: GameBasics) {
   const { data, isLoading, isError, error, isFetching } = useGames(gameId);
@@ -50,6 +51,7 @@ export default function GameBasics({ gameId }: GameBasics) {
   if (isLoading || !data) {
     return <p className="text-white">Loading...</p>;
   }
+  console.log(data);
 
   return (
     <div className="col-span-2 rounded bg-gray-800  p-5 text-gray-400 lg:col-span-1 ">

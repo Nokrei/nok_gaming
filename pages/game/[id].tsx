@@ -13,7 +13,7 @@ export default function GamePage() {
         <div className=" grid grid-cols-2 gap-3 px-5">
           <GameBasics gameId={id} />
           <div className="col-span-2 lg:col-span-1">
-            <GameStats gameTitle={title} />
+            {/* <GameStats gameTitle={title} /> */}
           </div>
           <div className="col-span-2 rounded bg-gray-800 p-5 text-gray-400  lg:col-span-1">
             <h2 className="text-center text-3xl">Recent discussion</h2>
