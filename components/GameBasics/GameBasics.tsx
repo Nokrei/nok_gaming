@@ -1,7 +1,4 @@
 import Image from "next/image";
-import { fetchGameDetails } from "../../fetchers/rawgAPI";
-import { useQuery } from "@tanstack/react-query";
-import { useGames } from "../../hooks";
 
 type Genre = {
   id: number;
@@ -15,11 +12,7 @@ type Platform = {
   };
 };
 
-type GameBasics = {
-  gameId: string;
-};
-
-type Data = {
+type Props = {
   gameData:
     | {
         genres: Genre[];
@@ -31,12 +24,7 @@ type Data = {
     | undefined;
 };
 
-type Error = {
-  message: string;
-  statusCode: number;
-};
-
-export default function GameBasics({ gameData }: Data) {
+export default function GameBasics({ gameData }: Props) {
   if (!gameData) {
     return <p className="text-white">Loading...</p>;
   }

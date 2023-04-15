@@ -1,27 +1,22 @@
-import { useQuery } from "@tanstack/react-query";
-import { fetchScrapingData } from "../../fetchers/scrapingData";
 import {
   BarChart,
   Bar,
-  Cell,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
   Legend,
   ResponsiveContainer,
 } from "recharts";
 
+type Ratings = {
+  id: number;
+  title: string;
+  count: number;
+};
+
 type Props = {
   gameData:
     | {
-        ratings: [
-          {
-            id: number;
-            title: string;
-            count: number;
-          }
-        ];
+        ratings: Ratings[];
       }
     | undefined;
 };

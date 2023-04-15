@@ -13,12 +13,19 @@ type Platform = {
   };
 };
 
+type Ratings = {
+  id: number;
+  title: string;
+  count: number;
+};
+
 type Data = {
   genres: Genre[];
   name: string;
   platforms: Platform[];
   background_image: string;
   description_raw: string;
+  ratings: Ratings[];
 };
 
 export const useGames = (gameId: string) => {
