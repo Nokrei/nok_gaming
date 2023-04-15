@@ -2,7 +2,8 @@ import { useRouter } from "next/router";
 import GameStats from "@/components/GameStats/GameStats";
 import GameBasics from "@/components/GameBasics/GameBasics";
 import RedditPosts from "@/components/RedditPosts/RedditPosts";
-import { useGames } from "../../hooks";
+import { useGames } from "../../hooks/useGames";
+import AllRelatedDeals from "@/components/AllRelatedDeals/AllRelatedDeals";
 
 export default function GamePage() {
   const router = useRouter();
@@ -16,6 +17,7 @@ export default function GamePage() {
           <GameBasics gameData={data} />
           <div className="col-span-2 lg:col-span-1">
             <GameStats gameData={data} />
+            <AllRelatedDeals gameTitle={title} />
           </div>
           <div className="col-span-2 rounded bg-gray-800 p-5 text-gray-400  lg:col-span-1">
             <h2 className="text-center text-3xl">Recent discussion</h2>

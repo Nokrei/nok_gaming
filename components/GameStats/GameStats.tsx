@@ -25,6 +25,8 @@ export default function GameStats({ gameData }: Props) {
   if (!gameData) {
     return <p className="text-white">Loading...</p>;
   }
+  console.log(gameData);
+
   return (
     <div className="rounded bg-gray-800 p-5 text-center  shadow-md">
       <ResponsiveContainer height={500} width="100%">
