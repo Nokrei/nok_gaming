@@ -30,5 +30,5 @@ export const useGames = (gameId: string) => {
     }
   );
 
-  return { data, isLoading, isError, error, isFetching };
+  return { data, isLoading, isError, error };
 };
