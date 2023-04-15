@@ -1,7 +1,6 @@
 import Image from "next/image";
 
 type Props = {
-  gameImageUrl: string;
   gameTitle: string;
   lowestPrice: string;
 };
