@@ -15,7 +15,7 @@ export default function GamePage() {
       <div className="bg-slate-900 py-5 md:static">
         <div className=" grid grid-cols-2 gap-3 px-5">
           <GameBasics gameData={data} />
-          <div className="col-span-2 lg:col-span-1">
+          <div className="col-span-2 grid gap-3 lg:col-span-1">
             <GameStats gameData={data} />
             <AllRelatedDeals gameTitle={title} />
           </div>
