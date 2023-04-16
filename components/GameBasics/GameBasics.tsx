@@ -28,7 +28,6 @@ export default function GameBasics({ gameData }: Props) {
   if (!gameData) {
     return <p className="text-white">Loading...</p>;
   }
-  console.log(gameData);
 
   return (
     <div className="col-span-2 rounded bg-gray-800  p-5 text-gray-400 lg:col-span-1 ">

@@ -13,20 +13,18 @@ export default function GamePage() {
   return (
     <div>
       <div className="bg-slate-900 py-5 md:static">
-        <div className="grid grid-cols-2 gap-3 px-5">
-          <div>
+        <div className="grid grid-cols-1 gap-3 px-5 lg:grid-cols-2">
+          <div className="flex flex-col gap-3">
             <GameBasics gameData={data} />
-            <div className="rounded bg-gray-800 p-5 text-gray-400">
-              <h2 className="text-center text-3xl">Recent discussion</h2>
+            <div className="">
               <RedditPosts gameId={id} />
             </div>
           </div>
 
-          <div className="">
+          <div className="flex flex-col gap-3">
             <GameStats gameData={data} />
             <AllRelatedDeals gameTitle={title} />
           </div>
-          <div className="col-span-2 lg:col-span-1"></div>
         </div>
       </div>
     </div>

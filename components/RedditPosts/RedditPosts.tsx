@@ -17,7 +17,6 @@ export default function RedditPosts({ gameId }: RedditPosts) {
     queryKey: ["RedditPosts"],
     queryFn: () => fetchPostsFromGameSubreddit(parseInt(gameId)),
   });
-  console.log(data);
 
   if (isLoading) {
     return <p className="text-white">Loading...</p>;
@@ -26,7 +25,8 @@ export default function RedditPosts({ gameId }: RedditPosts) {
     return <p className="text-red-600">Something went wrong</p>;
   }
   return (
-    <div>
+    <div className="rounded bg-gray-800 p-5 text-gray-400">
+      <h2 className="text-center text-3xl">Recent discussion</h2>
       {data.results.map((post: Post) => {
         return (
           <div key={post.id} className="my-5 rounded bg-gray-900  p-5">

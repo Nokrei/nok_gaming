@@ -11,10 +11,7 @@ type Data = {
 };
 
 export const useDeals = (gameTitle: string) => {
-  const { data, isLoading, isFetching, isError, error } = useQuery<
-    Data[],
-    Error
-  >({
+  const { data, isLoading, isError, error } = useQuery<Data[], Error>({
     queryKey: ["RelatedDeals"],
     queryFn: () => fetchAllRelatedDeals(gameTitle),
     keepPreviousData: true,
