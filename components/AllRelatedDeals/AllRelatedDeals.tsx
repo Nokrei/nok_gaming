@@ -19,7 +19,7 @@ export default function AllRelatedDeals({ gameTitle }: Props) {
   const { data: dealsForTitleData, refetch: fetchTitleDataOnClick } =
     useDealsForTitle(specificDealId);
 
-  if (!gameTitle || !allDealsData) {
+  if (!allDealsData) {
     return <p className="text-white">Loading...</p>;
   }
 
@@ -45,8 +45,6 @@ export default function AllRelatedDeals({ gameTitle }: Props) {
     fetchTitleDataOnClick();
   };
 
-  // console.log(allStoresInfoData);
-
   return (
     <div className="rounded bg-gray-800 p-5 text-gray-400">
       <h2 className="pb-5 text-center text-3xl ">Deals:</h2>
@@ -60,36 +58,33 @@ export default function AllRelatedDeals({ gameTitle }: Props) {
           />
         ))}
       </div>
-      <p className="text-white">{dealsForTitleData?.info.title}</p>
       <div></div>
       <ReusableModal
         modalTitle={dealsForTitleData?.info.title}
         isModalOpen={dealModalIsOpen}
         closeModal={closeDealModal}
       >
-        <div>
-          {dealsForTitleData?.deals.map((deal) => (
-            <a
-              key={deal.dealID}
-              href={`https://www.cheapshark.com/redirect?dealID=${deal.dealID}`}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <div>
-                <Image
-                  src={`https://www.cheapshark.com/${
-                    storesById[deal.storeID].images.logo
-                  }`}
-                  alt="dsa"
-                  width={100}
-                  height={100}
-                />
-                <p>{storesById[deal.storeID].storeName}</p>
-                <p>{deal.price}</p>
-              </div>
-            </a>
-          ))}
-        </div>
+        {dealsForTitleData?.deals.map((deal) => (
+          <a
+            key={deal.dealID}
+            href={`https://www.cheapshark.com/redirect?dealID=${deal.dealID}`}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <div className="rounded bg-gray-900 p-5 text-center">
+              <Image
+                src={`https://www.cheapshark.com/${
+                  storesById[deal.storeID].images.logo
+                }`}
+                alt="dsa"
+                width={100}
+                height={100}
+              />
+              <p>{storesById[deal.storeID].storeName}</p>
+              <p>{deal.price}</p>
+            </div>
+          </a>
+        ))}
       </ReusableModal>
     </div>
   );

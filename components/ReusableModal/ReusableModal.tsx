@@ -14,18 +14,6 @@ export default function ReusableModal({
   closeModal,
   children,
 }: Props) {
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      width: "80vmin",
-    },
-  };
-
   Modal.setAppElement("#__next");
 
   function afterOpenModal() {
@@ -33,20 +21,28 @@ export default function ReusableModal({
   }
 
   return (
-    <div>
-      <Modal
-        isOpen={isModalOpen}
-        onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
-        <h2 className="text-black">{modalTitle}</h2>
-        <button onClick={closeModal} className="text-black">
-          close
-        </button>
-        <div className="text-black">{children}</div>
-      </Modal>
-    </div>
+    <Modal
+      isOpen={isModalOpen}
+      onAfterOpen={afterOpenModal}
+      onRequestClose={closeModal}
+      // style={customStyles}
+      contentLabel="Example Modal"
+      overlayClassName="modalOverlay"
+      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded bg-gray-800 p-5"
+    >
+      <div>
+        <div className="flex justify-between pb-5">
+          <h2 className="text-2xl">{modalTitle}</h2>
+          <button
+            onClick={closeModal}
+            className="rounded bg-red-500 p-2 duration-100 hover:bg-red-400"
+          >
+            Close
+          </button>
+        </div>
+
+        <div className="grid grid-cols-4 gap-5 ">{children}</div>
+      </div>
+    </Modal>
   );
 }
