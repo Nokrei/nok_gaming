@@ -9,6 +9,9 @@ import ReusableModal from "../ReusableModal/ReusableModal";
 type Props = {
   gameTitle: string;
 };
+type StoresById = {
+  [key: string]: any;
+};
 
 export default function AllRelatedDeals({ gameTitle }: Props) {
   const [specificDealId, setSpecificDealId] = useState("");
@@ -19,9 +22,17 @@ export default function AllRelatedDeals({ gameTitle }: Props) {
   const { data: dealsForTitleData, refetch: fetchTitleDataOnClick } =
     useDealsForTitle(specificDealId);
 
-  if (!allDealsData) {
-    return <p className="text-white">Loading...</p>;
-  }
+  const storesById: StoresById = allStoresInfoData!?.reduce((next, store) => {
+    const { storeID } = store;
+    return { ...next, [storeID]: store };
+  }, {});
+  console.log(storesById);
+
+  const HandleRelatedDealClick = async (id: string) => {
+    await setSpecificDealId(id);
+    openDealModal();
+    fetchTitleDataOnClick();
+  };
 
   const openDealModal = () => {
     setDealModalIsOpen(true);
@@ -30,20 +41,9 @@ export default function AllRelatedDeals({ gameTitle }: Props) {
     setDealModalIsOpen(false);
   };
 
-  const storesById = allStoresInfoData?.reduce((next, store) => {
-    const { storeID } = store;
-    return { ...next, [storeID]: store };
-  }, {});
-  console.log(storesById);
-
-  const HandleRelatedDealClick = async (id: string) => {
-    await setSpecificDealId(id);
-
-    console.log(dealsForTitleData);
-
-    openDealModal();
-    fetchTitleDataOnClick();
-  };
+  if (!allDealsData) {
+    return <p className="text-white">Loading...</p>;
+  }
 
   return (
     <div className="rounded bg-gray-800 p-5 text-gray-400">
@@ -60,31 +60,35 @@ export default function AllRelatedDeals({ gameTitle }: Props) {
       </div>
       <div></div>
       <ReusableModal
-        modalTitle={dealsForTitleData?.info.title}
+        modalTitle={dealsForTitleData?.info.title as string}
         isModalOpen={dealModalIsOpen}
         closeModal={closeDealModal}
       >
-        {dealsForTitleData?.deals.map((deal) => (
-          <a
-            key={deal.dealID}
-            href={`https://www.cheapshark.com/redirect?dealID=${deal.dealID}`}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <div className="rounded bg-gray-900 p-5 text-center">
-              <Image
-                src={`https://www.cheapshark.com/${
-                  storesById[deal.storeID].images.logo
-                }`}
-                alt="dsa"
-                width={100}
-                height={100}
-              />
-              <p>{storesById[deal.storeID].storeName}</p>
-              <p>{deal.price}</p>
-            </div>
-          </a>
-        ))}
+        {storesById && (
+          <>
+            {dealsForTitleData?.deals.map((deal) => (
+              <a
+                key={deal.dealID}
+                href={`https://www.cheapshark.com/redirect?dealID=${deal.dealID}`}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <div className="rounded bg-gray-900 p-5 text-center">
+                  <Image
+                    src={`https://www.cheapshark.com/${
+                      storesById[deal.storeID].images.logo
+                    }`}
+                    alt="dsa"
+                    width={100}
+                    height={100}
+                  />
+                  <p>{storesById[deal.storeID].storeName}</p>
+                  <p>{deal.price}</p>
+                </div>
+              </a>
+            ))}
+          </>
+        )}
       </ReusableModal>
     </div>
   );

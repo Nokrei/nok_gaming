@@ -7,8 +7,8 @@ type LowestPrice = {
 };
 
 type Deal = {
-  storeId: string;
-  dealId: string;
+  storeID: string;
+  dealID: string;
   price: string;
   retailPrice: string;
   savings: string;
@@ -21,7 +21,7 @@ type Info = {
 
 type Data = {
   cheapestPriceEver: LowestPrice;
-  deals: Deal;
+  deals: Deal[];
   info: Info;
 };
 

@@ -2,7 +2,7 @@ import { fetchAllStoresInfo } from "../fetchers/cheapshark";
 import { useQuery } from "@tanstack/react-query";
 
 type Data = {
-  storeId: string;
+  storeID: string;
   storeName: string;
 };
 
