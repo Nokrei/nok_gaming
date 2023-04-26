@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
+import { useGames } from "../../hooks/useGames";
 import GameStats from "@/components/GameStats/GameStats";
 import GameBasics from "@/components/GameBasics/GameBasics";
 import RedditPosts from "@/components/RedditPosts/RedditPosts";
-import { useGames } from "../../hooks/useGames";
 import AllRelatedDeals from "@/components/AllRelatedDeals/AllRelatedDeals";
 
 export default function GamePage() {

@@ -1,5 +1,4 @@
 import Image from "next/image";
-
 type Genre = {
   id: number;
   name: string;

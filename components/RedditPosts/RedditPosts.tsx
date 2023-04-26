@@ -1,22 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
-import { fetchPostsFromGameSubreddit } from "../../fetchers/rawgAPI";
+import { useRedditPosts } from "../../hooks/useRedditPosts";
 
-type RedditPosts = {
+type Props = {
   gameId: string;
 };
-type Post = {
-  id: number;
-  created: string;
-  username: string;
-  url: string;
-  name: string;
-};
 
-export default function RedditPosts({ gameId }: RedditPosts) {
-  const { data, isLoading, isFetching, isError, error } = useQuery({
-    queryKey: ["RedditPosts"],
-    queryFn: () => fetchPostsFromGameSubreddit(parseInt(gameId)),
-  });
+export default function RedditPosts({ gameId }: Props) {
+  const { data, isLoading, isError, error } = useRedditPosts(gameId);
 
   if (isLoading) {
     return <p className="text-white">Loading...</p>;
@@ -27,7 +16,7 @@ export default function RedditPosts({ gameId }: RedditPosts) {
   return (
     <div className="rounded bg-gray-800 p-5 text-gray-400">
       <h2 className="text-center text-3xl">Recent discussion</h2>
-      {data.results.map((post: Post) => {
+      {data!.results.map((post) => {
         return (
           <div key={post.id} className="my-5 rounded bg-gray-900  p-5">
             <div className="flex justify-between pb-5 text-gray-400">

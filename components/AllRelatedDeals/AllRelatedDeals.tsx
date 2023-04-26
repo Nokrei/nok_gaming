@@ -18,7 +18,8 @@ export default function AllRelatedDeals({ gameTitle }: Props) {
   const [dealModalIsOpen, setDealModalIsOpen] = useState(false);
 
   const { data: allStoresInfoData } = useStoresInfo();
-  const { data: allDealsData } = useDeals(gameTitle);
+  const { data: allDealsData, isFetching: isFetchingAllDealsData } =
+    useDeals(gameTitle);
   const { data: dealsForTitleData, refetch: fetchTitleDataOnClick } =
     useDealsForTitle(specificDealId);
 
@@ -26,7 +27,6 @@ export default function AllRelatedDeals({ gameTitle }: Props) {
     const { storeID } = store;
     return { ...next, [storeID]: store };
   }, {});
-  console.log(storesById);
 
   const HandleRelatedDealClick = async (id: string) => {
     await setSpecificDealId(id);
@@ -41,15 +41,20 @@ export default function AllRelatedDeals({ gameTitle }: Props) {
     setDealModalIsOpen(false);
   };
 
-  if (!allDealsData) {
-    return <p className="text-white">Loading...</p>;
+  if (isFetchingAllDealsData) {
+    return <p className="text-white">Fetching deals...</p>;
   }
 
   return (
     <div className="rounded bg-gray-800 p-5 text-gray-400">
       <h2 className="pb-5 text-center text-3xl ">Deals:</h2>
+      {allDealsData!.length < 1 && (
+        <p className="text-center text-gray-400">
+          No deals found for {gameTitle}
+        </p>
+      )}
       <div className="flex flex-wrap gap-3 ">
-        {allDealsData.map((deal) => (
+        {allDealsData!.map((deal) => (
           <RelatedDeal
             key={deal.gameID}
             gameTitle={deal.external}
