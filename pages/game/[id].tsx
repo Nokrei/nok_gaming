@@ -1,7 +1,7 @@
-import { useContext, useEffect } from "react";
 import { useRouter } from "next/router";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/config/firebaseApp.config";
 import { useGames } from "../../hooks/useGames";
-import AuthContext from "@/context/AuthContext";
 import GameStats from "@/components/GameStats/GameStats";
 import GameBasics from "@/components/GameBasics/GameBasics";
 import RedditPosts from "@/components/RedditPosts/RedditPosts";
@@ -10,25 +10,15 @@ import Layout from "@/components/Layout/Layout";
 
 export default function GamePage() {
   const router = useRouter();
-  const { loggedInUser } = useContext(AuthContext);
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      router.push("/");
+    }
+  });
+  console.log(router.query);
+
   const { id, title } = router.query as { id: string; title: string };
   const { data, isLoading, isError, error } = useGames(id);
-
-  useEffect(() => {
-    if (!loggedInUser) {
-      router?.push("/");
-    }
-  }, [router, loggedInUser]);
-
-  if (!loggedInUser) {
-    return (
-      <Layout>
-        <h2 className="text-center text-white">
-          You must be logged in to view this page
-        </h2>
-      </Layout>
-    );
-  }
 
   return (
     <Layout>

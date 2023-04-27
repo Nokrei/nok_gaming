@@ -29,13 +29,14 @@ type Data = {
 };
 
 export const useGames = (gameId: string) => {
-  const { data, isLoading, isFetching, isError, error } = useQuery<Data, Error>(
-    {
-      queryKey: ["GameDetails"],
-      queryFn: () => fetchGameDetails(parseInt(gameId)),
-      keepPreviousData: true,
-    }
-  );
+  const { data, isLoading, isFetching, isError, error, refetch } = useQuery<
+    Data,
+    Error
+  >({
+    queryKey: ["GameDetails"],
+    queryFn: () => fetchGameDetails(parseInt(gameId)),
+    keepPreviousData: true,
+  });
 
   return { data, isLoading, isFetching, isError, error };
 };
