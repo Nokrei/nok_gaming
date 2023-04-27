@@ -13,13 +13,13 @@ export default function Header() {
       });
   };
   return (
-    <div className="flex justify-between align-middle p-4 mb-5 bg-teal-900 shadow">
-      <h1 className="text-center justify-self-center font-bold text-xl text-white ">
+    <div className=" flex justify-between bg-gray-800 p-4 align-middle shadow">
+      <h1 className="justify-self-center text-center text-xl font-bold text-white ">
         Nok Gaming
       </h1>
       {loggedInUser && (
         <button
-          className="rounded text-white bg-teal-700 py-1 px-2 font-semibold font-sans hover:bg-teal-800 duration-200"
+          className="rounded bg-teal-700 py-1 px-2 font-sans font-semibold text-white duration-200 hover:bg-teal-800"
           onClick={handleSignOut}
         >
           Sign out

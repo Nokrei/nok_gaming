@@ -4,6 +4,7 @@ import GameStats from "@/components/GameStats/GameStats";
 import GameBasics from "@/components/GameBasics/GameBasics";
 import RedditPosts from "@/components/RedditPosts/RedditPosts";
 import AllRelatedDeals from "@/components/AllRelatedDeals/AllRelatedDeals";
+import Layout from "@/components/Layout/Layout";
 
 export default function GamePage() {
   const router = useRouter();
@@ -11,7 +12,7 @@ export default function GamePage() {
   const { data, isLoading, isError, error } = useGames(id);
 
   return (
-    <div>
+    <Layout>
       <div className="bg-slate-900 py-5 md:static">
         <div className="grid grid-cols-1 gap-3 px-5 lg:grid-cols-2">
           <div className="flex flex-col gap-3">
@@ -27,6 +28,6 @@ export default function GamePage() {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }

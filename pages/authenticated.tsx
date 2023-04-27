@@ -13,7 +13,6 @@ export default function AuthenticatedPage() {
   const [userFavouriteGames, setUserFavouriteGames] = useState<any[]>([]);
   const { loggedInUser, setLoggedInUser } = useContext(AuthContext);
   const [displayedName, setDisplayedName] = useState("");
-  const [selectedPage, setSelectedPage] = useState(1);
 
   const router = useRouter();
 
@@ -26,10 +25,12 @@ export default function AuthenticatedPage() {
     }
   });
 
+  const pageNumber = Number(router.query.page);
+
   const { isLoading, isError, error, data, isFetching, isPreviousData } =
     useQuery({
-      queryKey: ["allGames", selectedPage],
-      queryFn: () => fetchAllGames(selectedPage),
+      queryKey: ["allGames", router.query.page],
+      queryFn: () => fetchAllGames(pageNumber),
       keepPreviousData: true,
     });
 
@@ -49,7 +50,7 @@ export default function AuthenticatedPage() {
 
   return (
     <Layout>
-      <h1 className="my-10 text-center text-3xl font-bold">
+      <h1 className="py-10 text-center text-3xl font-bold">
         Welcome {displayedName}
       </h1>
       <p className="mb-20 text-center">
@@ -73,19 +74,27 @@ export default function AuthenticatedPage() {
           })}
         </div>
       )}
-      <p className="text-center text-white">Current Page: {selectedPage}</p>
+      <p className="text-center text-white">Current Page: {pageNumber}</p>
       {isFetching && <p className="text-center text-white">Loading...</p>}
       <div className="flex justify-center gap-5">
         <button
-          disabled={selectedPage <= 1}
-          onClick={() => setSelectedPage((old) => Math.max(old - 1, 0))}
+          disabled={pageNumber <= 1}
+          onClick={() => {
+            router.push({
+              pathname: "/authenticated",
+              query: { page: pageNumber - 1 },
+            });
+          }}
           className="w-32 rounded bg-blue-500 p-2 text-white duration-100 hover:bg-blue-300"
         >
           Prev
         </button>
         <button
           onClick={() => {
-            setSelectedPage((old) => old + 1);
+            router.push({
+              pathname: "/authenticated",
+              query: { page: pageNumber + 1 },
+            });
           }}
           className="w-32 rounded bg-blue-500 p-2 text-white duration-100 hover:bg-blue-300"
         >

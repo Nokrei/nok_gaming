@@ -17,7 +17,7 @@ export default function Layout({ title, description, children }: LayoutType) {
         <meta name="description" content={description} />
       </Head>
       <Header />
-      <div>{children}</div>
+      <div className="bg-slate-900">{children}</div>
     </div>
   );
 }
