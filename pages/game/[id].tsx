@@ -9,7 +9,12 @@ import RedditPosts from "@/components/RedditPosts/RedditPosts";
 import AllRelatedDeals from "@/components/AllRelatedDeals/AllRelatedDeals";
 import Layout from "@/components/Layout/Layout";
 
-export default function GamePage() {
+type Props = {
+  id: string;
+  title: string;
+};
+
+export default function GamePage(props: Props) {
   const router = useRouter();
   onAuthStateChanged(auth, (user) => {
     if (!user) {
@@ -17,7 +22,7 @@ export default function GamePage() {
     }
   });
 
-  const { id, title } = router.query as { id: string; title: string };
+  const { id, title } = props;
   const { data, isLoading, isError, error } = useGames(id);
 
   return (
