@@ -14,6 +14,10 @@ type Props = {
   title: string;
 };
 
+// Router query params are undefined before hydration,
+// getting them from server side props so that correct
+// content is rendered on page reload.
+
 export default function GamePage(props: Props) {
   const router = useRouter();
   onAuthStateChanged(auth, (user) => {
@@ -35,7 +39,6 @@ export default function GamePage(props: Props) {
               <RedditPosts gameId={id} />
             </div>
           </div>
-
           <div className="flex flex-col gap-3">
             <GameStats gameData={data} />
             <AllRelatedDeals gameTitle={title} />
