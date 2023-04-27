@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { NextPageContext } from "next/types";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/config/firebaseApp.config";
 import { useGames } from "../../hooks/useGames";
@@ -15,7 +16,6 @@ export default function GamePage() {
       router.push("/");
     }
   });
-  console.log(router.query);
 
   const { id, title } = router.query as { id: string; title: string };
   const { data, isLoading, isError, error } = useGames(id);
@@ -39,4 +39,9 @@ export default function GamePage() {
       </div>
     </Layout>
   );
+}
+
+export async function getServerSideProps(context: NextPageContext) {
+  const { id, title } = context.query;
+  return { props: { id, title } };
 }
