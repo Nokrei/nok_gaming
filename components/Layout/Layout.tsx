@@ -11,7 +11,7 @@ type LayoutType = {
 
 export default function Layout({ title, description, children }: LayoutType) {
   return (
-    <div>
+    <div className="bg-slate-900">
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />

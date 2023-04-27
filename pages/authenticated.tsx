@@ -53,10 +53,7 @@ export default function AuthenticatedPage() {
       <h1 className="py-10 text-center text-3xl font-bold">
         Welcome {displayedName}
       </h1>
-      <p className="mb-20 text-center">
-        Click a game card to add it to your favourites. <br />
-        Click it again to remove.
-      </p>
+
       {isLoading ? (
         <div className="text-center text-white">Loading...</div>
       ) : isError ? (
