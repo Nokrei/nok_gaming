@@ -29,7 +29,6 @@ export default function FavouritesPage() {
       getUserFavouriteGames();
     }
   }, [loggedInUser]);
-  console.log(userFavouriteGames);
 
   return (
     <Layout>

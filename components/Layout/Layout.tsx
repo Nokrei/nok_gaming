@@ -1,5 +1,6 @@
 import React from "react";
 import Head from "next/head";
+import Link from "next/link";
 
 import Header from "../Header/Header";
 
@@ -17,6 +18,11 @@ export default function Layout({ title, description, children }: LayoutType) {
         <meta name="description" content={description} />
       </Head>
       <Header />
+      <Link href="/favourites">
+        <button className="bg-slate-900 py-1 px-2 font-sans font-semibold">
+          Favourites
+        </button>
+      </Link>
       <div className="bg-slate-900">{children}</div>
     </div>
   );

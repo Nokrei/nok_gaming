@@ -69,7 +69,9 @@ export default function AuthenticatedPage() {
               <GameCard
                 key={game.id}
                 game={game}
-                isFavourite={userFavouriteGames.includes(game.id)}
+                isFavourite={userFavouriteGames.some(
+                  (item) => item.id === game.id
+                )}
               />
             );
           })}
