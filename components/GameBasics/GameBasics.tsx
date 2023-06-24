@@ -56,12 +56,14 @@ export default function GameBasics({ gameData }: Props) {
         })}
       </div>
       <div className="flex justify-center">
-        <Image
-          width={600}
-          height={600}
-          src={gameData.background_image}
-          alt={gameData.name}
-        />
+        {gameData.background_image && (
+          <Image
+            width={600}
+            height={600}
+            src={gameData.background_image}
+            alt={gameData.name}
+          />
+        )}
       </div>
       <div className="pt-5">
         <p>{gameData.description_raw}</p>

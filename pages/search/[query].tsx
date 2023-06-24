@@ -11,7 +11,7 @@ export default function SearchPage() {
 
   const { isLoading, isError, error, data, isFetching, isPreviousData } =
     useQuery({
-      queryKey: ["allGames", router.query.page],
+      queryKey: ["searchGames", router.query.page],
       queryFn: () => searchForGames(1, searchQuery as string),
       keepPreviousData: true,
     });
