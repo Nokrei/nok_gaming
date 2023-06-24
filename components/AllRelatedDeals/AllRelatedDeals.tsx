@@ -78,17 +78,21 @@ export default function AllRelatedDeals({ gameTitle }: Props) {
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <div className="rounded bg-gray-900 p-5 text-center">
-                  <Image
-                    src={`https://www.cheapshark.com/${
-                      storesById[deal.storeID].images.logo
-                    }`}
-                    alt="dsa"
-                    width={100}
-                    height={100}
-                  />
-                  <p>{storesById[deal.storeID].storeName}</p>
-                  <p>{deal.price}</p>
+                <div className="h-full rounded bg-gray-900 p-2 text-center duration-100 md:p-5 md:hover:bg-gray-700">
+                  <div className="relative m-auto hidden h-10 w-10 md:block">
+                    <Image
+                      src={`https://www.cheapshark.com/${
+                        storesById[deal.storeID].images.logo
+                      }`}
+                      alt="dsa"
+                      fill
+                    />
+                  </div>
+
+                  <p className="text-xs md:text-base">
+                    {storesById[deal.storeID].storeName}
+                  </p>
+                  <p className="text-xs md:text-base">{deal.price}</p>
                 </div>
               </a>
             ))}

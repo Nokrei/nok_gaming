@@ -8,6 +8,7 @@ import { fetchAllGames } from "../fetchers/rawgAPI";
 import Layout from "@/components/Layout/Layout";
 import AuthContext from "@/context/AuthContext";
 import GameCard from "@/components/GameCard/GameCard";
+import Search from "@/components/Search/Search";
 
 export default function AuthenticatedPage() {
   const [userFavouriteGames, setUserFavouriteGames] = useState<any[]>([]);
@@ -53,7 +54,7 @@ export default function AuthenticatedPage() {
       <h1 className="py-10 text-center text-3xl font-bold">
         Welcome {displayedName}
       </h1>
-
+      <Search />
       {isLoading ? (
         <div className="text-center text-white">Loading...</div>
       ) : isError ? (

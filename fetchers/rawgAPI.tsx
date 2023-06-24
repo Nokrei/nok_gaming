@@ -26,3 +26,15 @@ export const fetchPostsFromGameSubreddit = async (gameId: number) => {
   const redditPosts = response.data;
   return redditPosts;
 };
+
+export const searchForGames = async (
+  pageNumber: number,
+  searchQuery: string
+) => {
+  console.log("Searching for games...");
+  const response = await axios.get(
+    `${baseURL}?key=${API_KEY}&page=${pageNumber}&search=${searchQuery}`
+  );
+  const searchResults = response.data;
+  return searchResults;
+};

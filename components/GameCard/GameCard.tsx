@@ -90,15 +90,17 @@ export default function GameCard({ isFavourite, game }: GameCard) {
             </button>
           </Link>
         </div>
-        <Image
-          fill
-          style={{ objectFit: "cover" }}
-          sizes="(max-width:1200px) 50vw"
-          src={game.background_image}
-          placeholder="blur"
-          blurDataURL={game.background_image}
-          alt={`${game.name} poster`}
-        />
+        {game.background_image && (
+          <Image
+            fill
+            style={{ objectFit: "cover" }}
+            sizes="(max-width:1200px) 50vw"
+            src={game.background_image}
+            placeholder="blur"
+            blurDataURL={game.background_image}
+            alt={`${game.name} poster`}
+          />
+        )}
       </div>
       <div>
         <p style={cardShadowStyle} className="bg-black text-center text-white">
