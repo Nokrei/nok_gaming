@@ -54,13 +54,16 @@ export default function AuthenticatedPage() {
       <h1 className="py-10 text-center text-3xl font-bold">
         Welcome {displayedName}
       </h1>
-      <Search />
+      <div className="flex justify-center pb-10">
+        <Search />
+      </div>
+
       {isLoading ? (
         <div className="text-center text-white">Loading...</div>
       ) : isError ? (
         <div className="text-center text-red-600">Ooops...</div>
       ) : (
-        <div className=" grid justify-items-center sm:grid-cols-2 md:grid-cols-3  xl:grid-cols-5">
+        <div className="grid justify-items-center sm:grid-cols-2 md:grid-cols-3  xl:grid-cols-5">
           {data.results.map((game: any) => {
             return (
               <GameCard

@@ -31,17 +31,21 @@ export default function GameCard({ isFavourite, game }: GameCard) {
   //  On click - add a game to favourites, or if game already is in favourites
   //  remove it. Game will be highlighted / have highlight removed without
   //  page refresh.
-  const addToFavourites = async (game: number) => {
+  const addToFavourites = async (
+    id: number,
+    background_image: string,
+    name: string
+  ) => {
     if (cardShadowStyle.color === regularStyle) {
       await updateDoc(doc(db, "users", JSON.parse(loggedInUser).uid), {
-        favouriteGames: arrayUnion(game),
+        favouriteGames: arrayUnion({ id, background_image, name }),
       });
       setCardShadowStyle({
         color: highlightedStyle,
       });
     } else {
       await updateDoc(doc(db, "users", JSON.parse(loggedInUser).uid), {
-        favouriteGames: arrayRemove(game),
+        favouriteGames: arrayRemove({ id, background_image, name }),
       });
       setCardShadowStyle({
         color: regularStyle,
@@ -69,7 +73,7 @@ export default function GameCard({ isFavourite, game }: GameCard) {
         <div className="relative z-20 flex justify-between">
           <button
             onClick={() => {
-              addToFavourites(game.id);
+              addToFavourites(game.id, game.background_image, game.name);
             }}
             className="h-0 w-6/12 cursor-pointer bg-green-500 opacity-0 duration-200 hover:bg-green-300 group-hover:h-10 group-hover:opacity-90"
           >

@@ -4,18 +4,27 @@ import { useState } from "react";
 export default function Search() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
-  const handleSearch = () => {
-    router.push(`/search/${searchQuery}`);
+
+  const handleSearch = (e: React.MouseEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    searchQuery && router.push(`/search/${searchQuery}`);
   };
   return (
-    <div>
+    <form onSubmit={handleSearch} className="flex p-2">
       <input
         type="text"
         placeholder="Search for a game"
+        required
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
+        className="border-2 border-gray-800 bg-slate-900 p-2 focus:border-gray-600 focus:outline-none"
       ></input>
-      <button onClick={handleSearch}>Search</button>
-    </div>
+      <button
+        type="submit"
+        className="bg-gray-800 px-2 duration-100 hover:bg-gray-600"
+      >
+        Search
+      </button>
+    </form>
   );
 }
