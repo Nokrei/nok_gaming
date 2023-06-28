@@ -21,12 +21,19 @@ export default function Header() {
         </h1>
       </Link>
       {loggedInUser && (
-        <button
-          className="rounded bg-teal-700 py-1 px-2 font-sans font-semibold text-white duration-200 hover:bg-teal-800"
-          onClick={handleSignOut}
-        >
-          Sign out
-        </button>
+        <div className="flex gap-2">
+          <Link href="/favourites">
+            <button className="rounded bg-slate-900 py-1 px-2 font-sans font-semibold duration-100 hover:bg-slate-700">
+              Favourites
+            </button>
+          </Link>
+          <button
+            className="rounded bg-teal-900 py-1 px-2 font-sans font-semibold text-white duration-200 hover:bg-teal-700"
+            onClick={handleSignOut}
+          >
+            Sign out
+          </button>
+        </div>
       )}
     </div>
   );
