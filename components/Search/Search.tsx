@@ -7,7 +7,12 @@ export default function Search() {
 
   const handleSearch = (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
-    searchQuery && router.push(`/search/${searchQuery}`);
+    if (!searchQuery) {
+      return;
+    } else {
+      searchQuery && router.push(`/search/${searchQuery}`);
+      setSearchQuery("");
+    }
   };
   return (
     <form onSubmit={handleSearch} className="flex p-2">

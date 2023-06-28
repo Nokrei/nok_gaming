@@ -75,7 +75,7 @@ export default function GameCard({ isFavourite, game }: GameCard) {
             onClick={() => {
               addOrRemoveFavourite(game.id, game.background_image, game.name);
             }}
-            className="h-0 w-6/12 cursor-pointer bg-green-500 opacity-0 duration-200 hover:bg-green-300 group-hover:h-10 group-hover:opacity-90"
+            className="w-1/2 cursor-pointer bg-green-500  duration-200 hover:bg-green-300  "
           >
             Fav
           </button>
@@ -89,7 +89,7 @@ export default function GameCard({ isFavourite, game }: GameCard) {
               },
             }}
           >
-            <button className="h-0 w-full  cursor-pointer bg-blue-500 opacity-0 duration-200 hover:bg-blue-300 group-hover:h-10 group-hover:opacity-90">
+            <button className="w-full  cursor-pointer bg-blue-500  duration-200 hover:bg-blue-300  ">
               Details
             </button>
           </Link>
