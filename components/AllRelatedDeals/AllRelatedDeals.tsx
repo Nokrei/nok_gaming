@@ -11,10 +11,32 @@ type Props = {
 type StoresById = {
   [key: string]: any;
 };
+type LowestPrice = {
+  price: string;
+  date: Date;
+};
+
+type Deal = {
+  storeID: string;
+  dealID: string;
+  price: string;
+  retailPrice: string;
+  savings: string;
+};
+
+type Info = {
+  steamAppId: string;
+  title: string;
+};
+type Data = {
+  cheapestPriceEver: LowestPrice;
+  deals: Deal[];
+  info: Info;
+};
 
 export default function AllRelatedDeals({ gameTitle }: Props) {
   const [specificDealId, setSpecificDealId] = useState("");
-  const [contentForAccordion, setContentForAccordion] = useState([]);
+  const [contentForAccordion, setContentForAccordion] = useState<Data[]>([]);
 
   const { data: allDealsData, isFetching: isFetchingAllDealsData } =
     useDeals(gameTitle);

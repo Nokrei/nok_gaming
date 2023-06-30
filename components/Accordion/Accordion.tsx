@@ -2,15 +2,19 @@ import Image from "next/image";
 import { useStoresInfo } from "../../hooks/useStoresInfo";
 import AccordionItem from "../AccordionItem/AccordionItem";
 
-type Title = {
-  gameID: number;
+type Data = {
+  gameID: string;
+  steamAppID: string | null;
+  cheapest: string;
+  cheapestDealId: string;
   external: string;
+  thumb: string;
 };
 
 type Props = {
-  titles: Title[];
+  titles: Data[] | undefined;
   content: any[];
-  onTitleClick: () => void;
+  onTitleClick: (title: string) => void;
 };
 
 type Deal = {
@@ -25,7 +29,7 @@ export default function Accordion({ titles, content, onTitleClick }: Props) {
 
   return (
     <div>
-      {titles.map((title) => (
+      {titles?.map((title) => (
         <AccordionItem
           key={title.gameID}
           title={title.external}
