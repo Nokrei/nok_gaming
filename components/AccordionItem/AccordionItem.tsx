@@ -29,7 +29,7 @@ export default function AccordionItem({
         style={{
           display: accordionOpen ? "flex" : "none",
         }}
-        className="gap-5 border-t-2 border-gray-700 p-5 text-center "
+        className="flex-wrap gap-5 border-t-2 border-gray-700 p-5 text-center "
       >
         {content}
       </div>
