@@ -4,6 +4,7 @@ import Image from "next/image";
 import { arrayUnion, updateDoc, doc, arrayRemove } from "firebase/firestore";
 import { db } from "@/config/firebaseApp.config";
 import AuthContext from "@/context/AuthContext";
+import InfoText from "../InfoText/InfoText";
 
 type Game = {
   id: number;

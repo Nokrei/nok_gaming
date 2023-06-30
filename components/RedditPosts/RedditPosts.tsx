@@ -1,4 +1,5 @@
 import { useRedditPosts } from "../../hooks/useRedditPosts";
+import InfoText from "../InfoText/InfoText";
 
 type Props = {
   gameId: string;
@@ -15,6 +16,7 @@ export default function RedditPosts({ gameId }: Props) {
   }
   return (
     <div className="rounded bg-gray-800 p-5 text-gray-400">
+      <InfoText text="This is a list of Reddit posts related to the game. Not every game has reddit posts assotiated with it. Obtained by calling the RAWG API reddit endpoint." />
       <h2 className="text-center text-3xl">Recent discussion</h2>
       {data!.results.map((post) => {
         return (

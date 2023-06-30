@@ -9,6 +9,7 @@ import Layout from "@/components/Layout/Layout";
 import AuthContext from "@/context/AuthContext";
 import GameCard from "@/components/GameCard/GameCard";
 import Search from "@/components/Search/Search";
+import InfoText from "@/components/InfoText/InfoText";
 
 export default function AuthenticatedPage() {
   const [userFavouriteGames, setUserFavouriteGames] = useState<any[]>([]);
@@ -57,13 +58,14 @@ export default function AuthenticatedPage() {
       <div className="flex justify-center pb-10">
         <Search />
       </div>
-
+      <InfoText text="Click Fav on a card to add it to your dedicated favourites collection in Firebase. Click Fav again to remove a title from your collection. You will be taken to the /favourites route upon clicking the button in the header." />
+      <InfoText text="Click Details to go to a game's dynamic route, several API calls will be made once you arrive." />
       {isLoading ? (
         <div className="text-center text-white">Loading...</div>
       ) : isError ? (
         <div className="text-center text-red-600">Ooops...</div>
       ) : (
-        <div className="grid justify-items-center sm:grid-cols-2 md:grid-cols-3  xl:grid-cols-5">
+        <div className="grid justify-items-center pt-5 sm:grid-cols-2 md:grid-cols-3  xl:grid-cols-5">
           {data.results.map((game: any) => {
             return (
               <GameCard

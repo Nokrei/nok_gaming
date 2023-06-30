@@ -1,4 +1,5 @@
 import Image from "next/image";
+import InfoText from "../InfoText/InfoText";
 type Genre = {
   id: number;
   name: string;
@@ -30,6 +31,7 @@ export default function GameBasics({ gameData }: Props) {
 
   return (
     <div className="col-span-2 rounded bg-gray-800  p-5 text-gray-400 lg:col-span-1 ">
+      <InfoText text="This is a basic info card. Obtained by calling the RAWG API game id endpoint." />
       <h1 className="text-center text-3xl font-bold">{gameData.name}</h1>
       <div className="flex flex-wrap justify-center gap-5 pt-5">
         {gameData.genres.map((genre) => {
