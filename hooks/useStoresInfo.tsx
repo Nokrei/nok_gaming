@@ -4,6 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 type Data = {
   storeID: string;
   storeName: string;
+  images: {
+    logo: string;
+  };
 };
 
 export const useStoresInfo = () => {

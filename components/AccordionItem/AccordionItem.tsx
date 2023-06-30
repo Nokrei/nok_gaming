@@ -18,7 +18,7 @@ export default function AccordionItem({
     setAccordionOpen(!accordionOpen);
   };
   return (
-    <div className="rounded bg-gray-900">
+    <div className="cursor-pointer rounded bg-gray-900">
       <div className="flex justify-between p-5" onClick={showAccordionContent}>
         <h2>{title}</h2>
         <div>
