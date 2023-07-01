@@ -1,63 +1,59 @@
 import { useEffect, useState } from "react";
 import { useDeals } from "../../hooks/useDeals";
-import RelatedDeal from "../RelatedDeal/RelatedDeal";
 import { useDealsForTitle } from "../../hooks/useDealsForTitle";
+import { useStoresInfo } from "../../hooks/useStoresInfo";
 import InfoText from "../InfoText/InfoText";
 import Accordion from "../Accordion/Accordion";
 
 type Props = {
   gameTitle: string;
 };
-type StoresById = {
-  [key: string]: any;
-};
-type LowestPrice = {
-  price: string;
-  date: Date;
-};
 
-type Deal = {
-  storeID: string;
-  dealID: string;
-  price: string;
-  retailPrice: string;
-  savings: string;
-};
-
-type Info = {
-  steamAppId: string;
+type Title = {
+  id: string;
   title: string;
-};
-type Data = {
-  cheapestPriceEver: LowestPrice;
-  deals: Deal[];
-  info: Info;
 };
 
 export default function AllRelatedDeals({ gameTitle }: Props) {
   const [specificDealId, setSpecificDealId] = useState("");
-  const [contentForAccordion, setContentForAccordion] = useState<Data[]>([]);
+  const [contentForAccordion, setContentForAccordion] = useState<any[]>([]);
 
   const { data: allDealsData, isFetching: isFetchingAllDealsData } =
     useDeals(gameTitle);
   const { data: dealsForTitleData, refetch: fetchTitleDataOnClick } =
     useDealsForTitle(specificDealId);
+  const { data: allStoresInfoData } = useStoresInfo();
 
-  // const storesById: StoresById = allStoresInfoData!?.reduce((next, store) => {
-  //   const { storeID } = store;
-  //   return { ...next, [storeID]: store };
-  // }, {});
+  const titlesForAccordion: Title[] = [];
+
+  (() => {
+    allDealsData?.map((item) =>
+      titlesForAccordion.push({ id: item.gameID, title: item.external })
+    );
+  })();
 
   const HandleRelatedDealClick = async (id: string) => {
     await setSpecificDealId(id);
-    await fetchTitleDataOnClick();
-    console.log(dealsForTitleData);
+    fetchTitleDataOnClick();
   };
 
   useEffect(() => {
     dealsForTitleData &&
-      setContentForAccordion((prev) => [...prev, dealsForTitleData]);
-  }, [dealsForTitleData]);
+      setContentForAccordion((prev) => [
+        ...prev,
+        {
+          title: dealsForTitleData.info.title,
+          deals: dealsForTitleData.deals.map((item) => ({
+            storeID: item.storeID,
+            dealID: item.dealID,
+            price: item.price,
+            storeLogo: allStoresInfoData?.filter(
+              (store) => store.storeID === item.storeID
+            )[0].images.logo,
+          })),
+        },
+      ]);
+  }, [dealsForTitleData, allStoresInfoData]);
 
   if (isFetchingAllDealsData) {
     return <p className="text-white">Fetching deals...</p>;
@@ -78,13 +74,13 @@ export default function AllRelatedDeals({ gameTitle }: Props) {
       "
       />
       <h2 className="pb-5 text-center text-3xl ">Deals:</h2>
-      {allDealsData!.length < 1 && (
+      {!allDealsData?.length && (
         <p className="text-center text-gray-400">
           No deals found for {gameTitle}
         </p>
       )}
       <Accordion
-        titles={allDealsData}
+        titles={titlesForAccordion}
         content={contentForAccordion}
         onTitleClick={(gameID) => HandleRelatedDealClick(gameID)}
       />

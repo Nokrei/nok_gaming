@@ -1,18 +1,13 @@
 import Image from "next/image";
-import { useStoresInfo } from "../../hooks/useStoresInfo";
 import AccordionItem from "../AccordionItem/AccordionItem";
 
-type Data = {
-  gameID: string;
-  steamAppID: string | null;
-  cheapest: string;
-  cheapestDealId: string;
-  external: string;
-  thumb: string;
+type Title = {
+  id: string;
+  title: string;
 };
 
 type Props = {
-  titles: Data[] | undefined;
+  titles: Title[];
   content: any[];
   onTitleClick: (title: string) => void;
 };
@@ -21,21 +16,21 @@ type Deal = {
   dealID: string;
   price: string;
   storeID: string;
+  storeLogo: string;
 };
 
 export default function Accordion({ titles, content, onTitleClick }: Props) {
-  const { data: allStoresInfoData } = useStoresInfo();
-  console.log(allStoresInfoData);
+  console.log(content);
 
   return (
     <div>
-      {titles?.map((title) => (
+      {titles.map((title) => (
         <AccordionItem
-          key={title.gameID}
-          title={title.external}
+          key={title.id}
+          title={title.title}
           content={
             content
-              .filter((item) => item?.info?.title === title.external)[0]
+              .filter((item) => item.title === title.title)[0]
               ?.deals.map((deal: Deal) => (
                 <a
                   key={deal.dealID}
@@ -44,13 +39,9 @@ export default function Accordion({ titles, content, onTitleClick }: Props) {
                   rel="noreferrer noopener"
                 >
                   <div>
-                    <div className="relative   h-20 w-20 ">
+                    <div className="relative h-20 w-20 ">
                       <Image
-                        src={`https://www.cheapshark.com/${
-                          allStoresInfoData?.filter(
-                            (item) => item.storeID === deal.storeID
-                          )[0].images.logo
-                        }`}
+                        src={`https://www.cheapshark.com/${deal.storeLogo}`}
                         alt="store logo"
                         fill
                       />
@@ -60,7 +51,7 @@ export default function Accordion({ titles, content, onTitleClick }: Props) {
                 </a>
               )) || "Loading..."
           }
-          handleTitleClick={() => onTitleClick(title.gameID)}
+          handleTitleClick={() => onTitleClick(title.id)}
         />
       ))}
     </div>
