@@ -1,6 +1,8 @@
 import axios from "axios";
 const baseURL = "https://www.cheapshark.com/api/1.0";
 
+// CheapShark API does not require an API key.
+// Therefore it is safe to make calls from client level.
 export const fetchAllRelatedDeals = async (gameTitle: string) => {
   console.log("Fetching all deals...");
   const response = await axios.get(`${baseURL}/games?title=${gameTitle}`);
