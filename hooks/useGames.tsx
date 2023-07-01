@@ -36,7 +36,8 @@ export const useGames = (gameId: string) => {
     queryKey: ["GameDetails"],
     queryFn: () => fetchGameDetails(parseInt(gameId)),
     keepPreviousData: true,
+    enabled: false,
   });
 
-  return { data, isLoading, isFetching, isError, error };
+  return { data, isLoading, isFetching, isError, error, refetch };
 };

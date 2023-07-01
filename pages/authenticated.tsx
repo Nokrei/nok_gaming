@@ -27,7 +27,7 @@ export default function AuthenticatedPage() {
     }
   });
 
-  const pageNumber = Number(router.query.page);
+  const pageNumber = Number(router.query.page) || 1;
 
   const { isLoading, isError, error, data, isFetching, isPreviousData } =
     useQuery({

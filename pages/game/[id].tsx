@@ -8,26 +8,26 @@ import GameBasics from "@/components/GameBasics/GameBasics";
 import RedditPosts from "@/components/RedditPosts/RedditPosts";
 import AllRelatedDeals from "@/components/AllRelatedDeals/AllRelatedDeals";
 import Layout from "@/components/Layout/Layout";
+import { useEffect, useState } from "react";
 
-type Props = {
-  id: string;
-  title: string;
-};
+// Router query params are undefined before hydration.
+// Trigerring the query only after router is ready.
 
-// Router query params are undefined before hydration,
-// getting them from server side props so that correct
-// content is rendered on page reload.
-
-export default function GamePage(props: Props) {
+export default function GamePage() {
   const router = useRouter();
+  const { id, title } = router.query;
+
   onAuthStateChanged(auth, (user) => {
     if (!user) {
       router.push("/");
     }
   });
-
-  const { id, title } = props;
-  const { data, isLoading, isError, error } = useGames(id);
+  const { data, isLoading, isError, error, refetch } = useGames(id as string);
+  useEffect(() => {
+    if (router.isReady) {
+      refetch();
+    }
+  }, [router, refetch]);
 
   return (
     <Layout>
@@ -36,20 +36,15 @@ export default function GamePage(props: Props) {
           <div className="flex flex-col gap-3">
             <GameBasics gameData={data} />
             <div className="">
-              <RedditPosts gameId={id} />
+              <RedditPosts gameId={id as string} />
             </div>
           </div>
           <div className="flex flex-col gap-3">
             <GameStats gameData={data} />
-            <AllRelatedDeals gameTitle={title} />
+            <AllRelatedDeals gameTitle={title as string} />
           </div>
         </div>
       </div>
     </Layout>
   );
-}
-
-export async function getServerSideProps(context: NextPageContext) {
-  const { id, title } = context.query;
-  return { props: { id, title } };
 }
