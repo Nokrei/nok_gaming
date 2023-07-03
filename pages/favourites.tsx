@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
-import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from "@/config/firebaseApp.config";
+import { db } from "@/config/firebaseApp.config";
 import AuthContext from "@/context/AuthContext";
 import Layout from "@/components/Layout/Layout";
 import GameCard from "@/components/GameCard/GameCard";
@@ -9,14 +8,8 @@ import Search from "@/components/Search/Search";
 
 export default function FavouritesPage() {
   const [userFavouriteGames, setUserFavouriteGames] = useState<any[]>([]);
-  const { loggedInUser, setLoggedInUser } = useContext(AuthContext);
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setLoggedInUser(JSON.stringify(user));
-    } else {
-      setLoggedInUser("");
-    }
-  });
+  const { loggedInUser } = useContext(AuthContext);
+
   useEffect(() => {
     const getUserFavouriteGames = async () => {
       const docRef = doc(db, "users", JSON.parse(loggedInUser).uid);

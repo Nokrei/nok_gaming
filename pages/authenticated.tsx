@@ -1,9 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
-import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { useQuery } from "@tanstack/react-query";
-import { auth, db } from "@/config/firebaseApp.config";
+import { db } from "@/config/firebaseApp.config";
 import { fetchAllGames } from "../fetchers/rawgAPI";
 import Layout from "@/components/Layout/Layout";
 import AuthContext from "@/context/AuthContext";
@@ -13,19 +12,10 @@ import InfoText from "@/components/InfoText/InfoText";
 
 export default function AuthenticatedPage() {
   const [userFavouriteGames, setUserFavouriteGames] = useState<any[]>([]);
-  const { loggedInUser, setLoggedInUser } = useContext(AuthContext);
+  const { loggedInUser } = useContext(AuthContext);
   const [displayedName, setDisplayedName] = useState("");
 
   const router = useRouter();
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setLoggedInUser(JSON.stringify(user));
-    } else {
-      router.push("/");
-      setLoggedInUser("");
-    }
-  });
 
   const pageNumber = Number(router.query.page) || 1;
 

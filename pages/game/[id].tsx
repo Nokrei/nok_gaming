@@ -1,7 +1,4 @@
 import { useRouter } from "next/router";
-import { NextPageContext } from "next/types";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/config/firebaseApp.config";
 import { useGames } from "../../hooks/useGames";
 import GameStats from "@/components/GameStats/GameStats";
 import GameBasics from "@/components/GameBasics/GameBasics";
@@ -17,11 +14,6 @@ export default function GamePage() {
   const router = useRouter();
   const { id, title } = router.query;
 
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      router.push("/");
-    }
-  });
   const { data, isLoading, isError, error, refetch } = useGames(id as string);
   useEffect(() => {
     if (router.isReady) {

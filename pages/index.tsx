@@ -1,18 +1,13 @@
+import { useContext } from "react";
 import { useRouter } from "next/router";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/config/firebaseApp.config";
+import AuthContext from "@/context/AuthContext";
 import Layout from "@/components/Layout/Layout";
 import LoginChoice from "@/components/LoginChoice/LoginChoice";
 
 export default function Home() {
   const router = useRouter();
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      router.push("/authenticated?page=1");
-    }
-  });
-
+  const { loggedInUser } = useContext(AuthContext);
+  loggedInUser && router.push("/authenticated?page=1");
   return (
     <Layout>
       <LoginChoice />
