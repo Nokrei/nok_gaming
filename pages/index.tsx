@@ -9,7 +9,7 @@ export default function Home() {
   const { loggedInUser } = useContext(AuthContext);
   loggedInUser && router.push("/authenticated?page=1");
   return (
-    <Layout>
+    <Layout title="Nok Gaming | Login" description="Login to Nok Gaming">
       <LoginChoice />
     </Layout>
   );

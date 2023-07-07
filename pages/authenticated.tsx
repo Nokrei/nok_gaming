@@ -41,7 +41,7 @@ export default function AuthenticatedPage() {
   }, [loggedInUser]);
 
   return (
-    <Layout>
+    <Layout title="Nok Gaming | Home" description="List of games">
       <h1 className="py-10 text-center text-3xl font-bold">
         Welcome {displayedName}
       </h1>

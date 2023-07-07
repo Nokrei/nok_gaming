@@ -24,7 +24,10 @@ export default function FavouritesPage() {
   }, [loggedInUser]);
 
   return (
-    <Layout>
+    <Layout
+      title="Nok Gaming | Favourite Games"
+      description="List of your favourite games"
+    >
       <h1 className="py-10 text-center text-3xl font-bold">
         Your favourite titles
       </h1>

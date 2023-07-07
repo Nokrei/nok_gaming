@@ -22,7 +22,10 @@ export default function GamePage() {
   }, [router, refetch]);
 
   return (
-    <Layout>
+    <Layout
+      title={`Nok Gaming | ${title as string}`}
+      description={`Description, stats and deals for ${title as string} `}
+    >
       <div className="bg-slate-900 py-5 md:static">
         <div className="grid grid-cols-1 gap-3 px-5 lg:grid-cols-2">
           <div className="flex flex-col gap-3">
