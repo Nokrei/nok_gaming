@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import Head from "next/head";
+import Script from "next/script";
 import { useRouter } from "next/router";
 import { onAuthStateChanged } from "firebase/auth";
 import AuthContext from "@/context/AuthContext";
@@ -12,6 +13,8 @@ type LayoutType = {
   description: string;
   children: any;
 };
+
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_MEASUREMENT_ID;
 
 export default function Layout({ title, description, children }: LayoutType) {
   const router = useRouter();
@@ -30,6 +33,18 @@ export default function Layout({ title, description, children }: LayoutType) {
         <title>{title}</title>
         <meta name="description" content={description} />
       </Head>
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){window.dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '${GA_MEASUREMENT_ID}');
+  `}
+      </Script>
       <Header />
 
       <div className="bg-slate-900">{children}</div>

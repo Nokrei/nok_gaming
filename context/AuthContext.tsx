@@ -37,7 +37,6 @@ const AuthContext = createContext(user);
 export const AuthProvider = ({ children }: { children: any }) => {
   const [loggedInUser, setLoggedInUser] = useState("");
   const [firebaseError, setFirebaseError] = useState(null);
-  const [displayedName, setDisplayedName] = useState("");
 
   // Register
   const createAccount = (email: string, password: string, fullName: string) => {
@@ -45,7 +44,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
         setDoc(doc(db, "users", user.uid), {
           uid: user.uid,
           email: user.email,
@@ -73,10 +71,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
   const googleSignIn = async () => {
     try {
       const res = await signInWithPopup(auth, googleProvider);
-      const credential = GoogleAuthProvider.credentialFromResult(res);
-      // const token = credential?.accessToken;
       const user = res.user;
-      console.log(res.user);
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
