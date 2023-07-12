@@ -1,18 +1,10 @@
 import { useContext } from "react";
 import Link from "next/link";
-import { signOut, getAuth } from "firebase/auth";
 import AuthContext from "../../context/AuthContext";
 
 export default function Header() {
-  const { loggedInUser } = useContext(AuthContext);
-  const auth = getAuth();
-  const handleSignOut = () => {
-    signOut(auth)
-      .then(() => {})
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  const { loggedInUser, logOut } = useContext(AuthContext);
+
   return (
     <div className=" flex justify-between bg-gray-800 p-4 align-middle shadow">
       <Link href="/">
@@ -29,7 +21,7 @@ export default function Header() {
           </Link>
           <button
             className="rounded bg-teal-900 py-1 px-2 font-sans font-semibold text-white duration-200 hover:bg-teal-700"
-            onClick={handleSignOut}
+            onClick={logOut}
           >
             Sign out
           </button>

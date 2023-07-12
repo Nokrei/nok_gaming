@@ -28,7 +28,7 @@ type Data = {
   ratings: Ratings[];
 };
 
-export const useGames = (gameId: string) => {
+export const useGames = (gameId: string, enabled: boolean) => {
   const { data, isLoading, isFetching, isError, error, refetch } = useQuery<
     Data,
     Error
@@ -36,7 +36,7 @@ export const useGames = (gameId: string) => {
     queryKey: ["GameDetails"],
     queryFn: () => fetchGameDetails(parseInt(gameId)),
     keepPreviousData: true,
-    enabled: false,
+    enabled: enabled,
   });
 
   return { data, isLoading, isFetching, isError, error, refetch };

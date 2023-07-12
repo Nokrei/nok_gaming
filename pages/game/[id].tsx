@@ -14,12 +14,15 @@ export default function GamePage() {
   const router = useRouter();
   const { id, title } = router.query;
 
-  const { data, isLoading, isError, error, refetch } = useGames(id as string);
-  useEffect(() => {
-    if (router.isReady) {
-      refetch();
-    }
-  }, [router, refetch]);
+  const { data, isLoading, isError, error, refetch } = useGames(
+    id as string,
+    router.isReady
+  );
+  // useEffect(() => {
+  //   if (router.isReady) {
+  //     refetch();
+  //   }
+  // }, [router, refetch]);
 
   return (
     <Layout
